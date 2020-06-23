@@ -1,7 +1,7 @@
-module Tripper.Shared.Validators.Error where
+module Tripper.Feature.Shared.Validators.Error where
 
-import Data.Aeson (ToJSON)
-import Data.Bifunctor (first)
+import Data.Aeson
+import Data.Bifunctor 
 import RIO hiding (first)
 
 import qualified RIO.HashMap as HM

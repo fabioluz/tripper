@@ -5,9 +5,7 @@ import RIO.Time (getCurrentTime)
 import Data.Aeson (FromJSON, ToJSON)
 import Tripper.Models (ClientId, User (..))
 import Tripper.Client.Types (CreateClient (..))
-import Tripper.Shared.Types (Email, mkEmail, mkPassword)
-import Tripper.Shared.Validators.Error (ValidationErrors, mapValError)
-import Tripper.Shared.Validators.Text (validateText, notEmpty, minLength)
+import Tripper.Feature.Shared
 
 data CreateUser = CreateUser
   { email    :: Text

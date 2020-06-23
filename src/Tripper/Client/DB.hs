@@ -1,22 +1,21 @@
 module Tripper.Client.DB (insertClientAndAdmin) where
 
 import RIO
-import RIO.Time (getCurrentTime)
-import Database.Persist (checkUnique, insert)
-import Tripper.DB (HasPool, runDb)
-import Tripper.Error (http422)
-import Tripper.Models (Client (..), ClientId, User(..), Unique (..), EntityField (..))
-import Tripper.Client.Types (ValidCreateClient (..))
-import Tripper.User.DB (mkUser)
-import Tripper.User.Types (ValidCreateUser (..))
-import Tripper.Shared.Types (mkPassword)
-import Tripper.Shared.Validators.Error (mkValError, ValidationErrors)
+import RIO.Time
+import Database.Persist
+import Tripper.Client.Types
+import Tripper.DB 
+import Tripper.Error
+import Tripper.Models
+import Tripper.Feature.Shared
+import Tripper.User.DB
+import Tripper.User.Types
 
 insertClientAndAdmin :: HasPool env => ValidCreateClient -> ValidCreateUser -> RIO env ()
 insertClientAndAdmin validClient validUser = runDb $ do
   client   <- liftRIO $ mkClient validClient
   clientId <- insert client
-  
+
   user       <- liftRIO $ mkUser clientId validUser
   emailInUse <- isJust <$> checkUnique user
   when emailInUse $ do
@@ -25,7 +24,7 @@ insertClientAndAdmin validClient validUser = runDb $ do
   userId <- insert user
   pure ()
 
-mkClient :: ValidCreateClient -> RIO env Client 
+mkClient :: ValidCreateClient -> RIO env Client
 mkClient ValidCreateClient {..} = do
   now <- getCurrentTime
   pure Client

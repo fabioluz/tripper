@@ -11,7 +11,7 @@ import Database.Persist.TH
   , share
   , sqlSettings
   )
-import Tripper.Shared.Types (Email, Password)
+import Tripper.Feature.Shared
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
   Client json sql=clients

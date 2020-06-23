@@ -5,7 +5,7 @@ import RIO.Time (getCurrentTime)
 import Database.Persist (Entity, getBy)
 import Tripper.DB (HasPool, runDb)
 import Tripper.Models (ClientId, User (..), Unique (..))
-import Tripper.Shared.Types (mkPassword, Email (..))
+import Tripper.Feature.Shared
 import Tripper.User.Types (ValidCreateUser (..))
 
 mkUser :: ClientId -> ValidCreateUser -> RIO env User

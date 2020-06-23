@@ -6,9 +6,7 @@ module Tripper.Client.Types
 
 import RIO
 import Data.Aeson (FromJSON, ToJSON)
-import Tripper.Shared.Validators.Error (mapValError, ValidationErrors)
-import Tripper.Shared.Validators.Text (validateText, notEmpty)
-
+import Tripper.Feature.Shared
 data CreateClient = CreateClient
   { clientName    :: Text
   , adminEmail    :: Text

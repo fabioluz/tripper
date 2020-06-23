@@ -1,32 +1,17 @@
-module Tripper.Shared.Types where
+module Tripper.Feature.Shared.Types where
 
-import RIO hiding (first)
-import Crypto.KDF.BCrypt (hashPassword, validatePassword)
-import Data.Aeson (FromJSON, ToJSON)
-import Data.Bifunctor (bimap, first)
-import Data.UUID (UUID)
+import Crypto.KDF.BCrypt
+import Data.Aeson
+import Data.Bifunctor
+import Data.UUID
 import Database.Persist.Sql
-  ( PersistField
-  , PersistFieldSql
-  , PersistValue (..)
-  , SqlType (..)
-  , sqlType
-  , toPersistValue
-  , fromPersistValue
-  )
-import Tripper.Shared.Validators.Error (IsErrorMsg)
-import Tripper.Shared.Validators.Text
-  ( contains
-  , notEmpty
-  , validateText
-  , TextError
-  )
-import Web.PathPieces (PathPiece, fromPathPiece, toPathPiece) 
-
-import qualified Data.UUID as U
+import RIO hiding (first)
+import Tripper.Feature.Shared.Validators.Error
+import Tripper.Feature.Shared.Validators.Text
+import Web.PathPieces
 
 -- |
--- | Email 
+-- | Email
 -- |
 
 newtype Email = Email { unEmail :: Text }
@@ -67,7 +52,7 @@ mkPassword plain = do
 
 checkPassword :: Text -> Password -> Bool
 checkPassword plain = validatePassword (encodeUtf8 plain) . encodeUtf8 . unPassword
-   
+
 instance PersistField Password where
   toPersistValue = PersistText . unPassword
   fromPersistValue = \case
@@ -82,9 +67,9 @@ instance PersistFieldSql Password where
 -- |
 
 instance PersistField UUID where
-  toPersistValue = PersistDbSpecific . U.toASCIIBytes
-  fromPersistValue (PersistDbSpecific v) = 
-    case U.fromASCIIBytes v of
+  toPersistValue = PersistDbSpecific . toASCIIBytes
+  fromPersistValue (PersistDbSpecific v) =
+    case fromASCIIBytes v of
       Nothing -> Left "Invalid UUID"
       Just u  -> Right u
   fromPersistValue _ = Left "NotPersistDbSpecific"
@@ -93,6 +78,6 @@ instance PersistFieldSql UUID where
   sqlType _ = SqlOther "uuid"
 
 instance PathPiece UUID where
-  fromPathPiece = U.fromText
-  toPathPiece = U.toText
+  fromPathPiece = fromText
+  toPathPiece = toText
 

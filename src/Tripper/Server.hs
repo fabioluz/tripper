@@ -1,24 +1,12 @@
-module Tripper.Server where
+module Tripper.Server (app) where
 
+import Control.Monad.Except
 import RIO hiding (Handler)
-import Control.Monad.Except (ExceptT (..))
-import Servant 
-  ( Application
-  , Context
-  , Handler (..)
-  , Proxy (..)
-  , Server
-  , ServerT
-  , serveWithContext
-  , hoistServerWithContext
-  , (:>)
-  , (:<|>) (..)
-  )
-import Servant.Auth.Server (Auth, AuthResult, CookieSettings, JWTSettings, JWT)
-import Tripper.Auth.Server (AuthAPI, authServer)
-import Tripper.Auth.Types (CurrentUser)
-import Tripper.Config (Config, HasConfig)
-import Tripper.Client.Server (ClientAPI, clientServer)
+import Servant
+import Servant.Auth.Server
+import Tripper.Auth
+import Tripper.Client.Server 
+import Tripper.Config
 
 type AppContext = '[CookieSettings, JWTSettings]
 
@@ -36,12 +24,12 @@ runApp cfg = flip runReaderT cfg . unRIO
 convertApp :: Config -> RIO Config a -> Handler a
 convertApp cfg = Handler . ExceptT . try . runApp cfg
 
-server :: CookieSettings -> JWTSettings -> ServerT AppAPI (RIO Config)
-server cs jwts = authServer cs jwts :<|> clientServer
+configServer :: CookieSettings -> JWTSettings -> ServerT AppAPI (RIO Config)
+configServer cs jwts = authServer cs jwts :<|> clientServer
 
-hoistServer :: CookieSettings -> JWTSettings -> Config -> Server AppAPI
-hoistServer cs jwts cfg = hoistServerWithContext
-  proxyAPI proxyContext (convertApp cfg) (server cs jwts)
+server :: CookieSettings -> JWTSettings -> Config -> Server AppAPI
+server cs jwts cfg = hoistServerWithContext proxyAPI proxyContext
+  (convertApp cfg) (configServer cs jwts)
 
 app :: Context AppContext -> CookieSettings -> JWTSettings -> Config -> Application
-app ctx cs jwts = serveWithContext proxyAPI ctx . hoistServer cs jwts
+app ctx cs jwts = serveWithContext proxyAPI ctx . server cs jwts

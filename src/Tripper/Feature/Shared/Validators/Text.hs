@@ -1,15 +1,14 @@
-module Tripper.Shared.Validators.Text
-( contains
+module Tripper.Feature.Shared.Validators.Text
+( TextError
+, contains
 , gtOrEq
 , minLength
 , notEmpty
-, TextError
 , validateText
 ) where
 
 import RIO
-import RIO.Prelude (tshow)
-import Tripper.Shared.Validators.Error (IsErrorMsg)
+import Tripper.Feature.Shared.Validators.Error
 
 import qualified RIO.Text as T
 

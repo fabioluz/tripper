@@ -1,12 +1,16 @@
-module Tripper.Auth.Types where
+module Tripper.Auth.Types
+( Login (..)
+, CurrentUser (..)
+, mkCurrentUser
+) where
 
+import Data.Aeson
+import Database.Persist
 import RIO
-import Data.Aeson (FromJSON, ToJSON)
-import Database.Persist (Entity (..))
-import Servant.Auth.Server (FromJWT, ToJWT)
-import Tripper.Models (ClientId, User (..), UserId)
+import Servant.Auth.Server
+import Tripper.Models
 
-data Login = Login 
+data Login = Login
   { email    :: Text
   , password :: Text
   } deriving (Generic, FromJSON)

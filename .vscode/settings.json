@@ -7,7 +7,10 @@
   "editor.tokenColorCustomizations": {
     "textMateRules": [
       {
-        "scope": "entity.name.namespace",
+        "scope": [ 
+          "entity.name.namespace.haskell",
+          "meta.import.haskell" 
+        ],
         "settings": {
           "foreground": "#D4D4D4"
         }
@@ -32,7 +35,10 @@
         }
       },
       {
-        "scope": "keyword.operator",
+        "scope": [
+          "keyword.operator",
+          "keyword.operator.arrow.left.haskell"
+        ],
         "settings": {
           "foreground": "#C586C0",
         }
@@ -48,15 +54,4 @@
       }
     ]
   },
-  "sqltools.connections": [
-    {
-      "database": "ride",
-      "dialect": "PostgreSQL",
-      "name": "ride",
-      "password": "102030",
-      "port": 5432,
-      "server": "localhost",
-      "username": "postgres"
-    }
-  ],
 }

@@ -3,7 +3,7 @@ module Tripper.Error where
 import RIO
 import Data.Aeson (encode)
 import Servant (ServerError (..), err422, err500)
-import Tripper.Shared.Validators.Error (ValidationErrors (..))
+import Tripper.Feature.Shared
 
 lbshow :: Show a => a -> LByteString
 lbshow = fromStrictBytes . encodeUtf8 . tshow

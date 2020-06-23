@@ -1,37 +1,17 @@
 module Tripper.Auth.Server (AuthAPI, authServer) where
 
+import Control.Monad.Trans.Maybe
+import Database.Persist
 import RIO
-import RIO.Time (getCurrentTime, addUTCTime)
-import Control.Monad.Trans.Maybe (MaybeT (..), runMaybeT)
-import Database.Persist (Entity (..))
-import Servant 
-  ( AddHeader
-  , Header
-  , Headers
-  , JSON
-  , NoContent (..)
-  , Post
-  , ReqBody
-  , ServerT
-  , (:>)
-  , addHeader
-  , err401
-  )
+import RIO.Time
+import Servant
 import Servant.Auth.Server
-  ( Auth
-  , CookieSettings
-  , JWT
-  , JWTSettings
-  , SetCookie
-  , cookieExpires
-  , acceptLogin
-  )
-import Tripper.DB (HasPool)
-import Tripper.Config (HasConfig)
-import Tripper.Models (User (..))
-import Tripper.Auth.Types (CurrentUser, mkCurrentUser, Login (..))
-import Tripper.Shared.Types (checkPassword)
-import Tripper.User.DB (getUserByEmail)
+import Tripper.Auth.Types
+import Tripper.Config
+import Tripper.DB
+import Tripper.Models
+import Tripper.Feature.Shared
+import Tripper.User.DB
 
 -- Represents the headers for the authorization response
 type AuthHeaders = '[Header "Set-Cookie" SetCookie, Header "Set-Cookie" SetCookie]
@@ -55,15 +35,15 @@ loginHandler baseCS jwts login = do
     Nothing      -> throwIO err401
     Just cookies -> pure $ cookies NoContent
 
--- | Updates cookie settings' expiration time
--- | This is also used in JWT tokens internally
+-- | Updates cookie settings' expiration time.
+-- | This is also used in JWT tokens internally.
 updateCS :: CookieSettings -> RIO env CookieSettings
 updateCS cs = do
   now <- getCurrentTime
   let exp = Just $ addUTCTime (43800 * 60) now
   pure $ cs { cookieExpires = exp }
 
-
+-- | Validate the input password againts the entity user.
 validatePassword :: Text -> Entity User -> RIO env (Maybe CurrentUser)
 validatePassword password user = pure $
    if checkPassword password currentPassword
@@ -72,6 +52,7 @@ validatePassword password user = pure $
   where
     currentPassword = userPassword $ entityVal user
 
+-- | Tries to authenticate the user (if the credentials match) and create response cookie with token.
 authUser
   :: ( HasPool env
      , AddHeader "Set-Cookie" SetCookie response withOneCookie
@@ -86,4 +67,4 @@ authUser cs jwts Login {..} = runMaybeT $ do
   current <- MaybeT $ validatePassword password user
   cookies <- MaybeT $ liftIO (acceptLogin cs jwts current)
   pure cookies
-  
+
