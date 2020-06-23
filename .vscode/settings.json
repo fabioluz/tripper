@@ -1,0 +1,62 @@
+{
+  "workbench.colorTheme": "Default Dark+",
+  "editor.fontFamily": "Hasklig",
+  "editor.fontLigatures": true,
+  "editor.tabSize": 2,
+  "editor.renderIndentGuides": false,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "entity.name.namespace",
+        "settings": {
+          "foreground": "#D4D4D4"
+        }
+      },
+      {
+        "scope": [
+          "punctuation.definition.string.begin.haskell",
+          "punctuation.definition.string.end.haskell",
+          "string.quoted.double"
+        ],
+        "settings": {
+          "foreground": "#C58971",
+        }
+      },
+      {
+        "scope": [
+          "storage.type.haskell",
+          "constant.other.haskell"
+        ],
+        "settings": {
+          "foreground": "#4EC9B0",
+        }
+      },
+      {
+        "scope": "keyword.operator",
+        "settings": {
+          "foreground": "#C586C0",
+        }
+      },
+      {
+        "scope": [
+          "keyword.other.preprocessor.haskell",
+          "meta.preprocessor.haskell"
+        ],
+        "settings": {
+          "foreground": "#BADC58"
+        }
+      }
+    ]
+  },
+  "sqltools.connections": [
+    {
+      "database": "ride",
+      "dialect": "PostgreSQL",
+      "name": "ride",
+      "password": "102030",
+      "port": 5432,
+      "server": "localhost",
+      "username": "postgres"
+    }
+  ],
+}

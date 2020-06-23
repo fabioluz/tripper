@@ -1,0 +1,84 @@
+name:                ride-rio
+version:             0.1.0.0
+github:              "githubuser/ride-rio"
+license:             BSD3
+author:              "Author name here"
+maintainer:          "example@example.com"
+copyright:           "2020 Author name here"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/githubuser/ride-rio#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- aeson
+- cryptonite
+- rio
+- uuid
+- mtl
+- transformers
+- resource-pool
+- monad-logger
+- path-pieces
+- persistent
+- persistent-postgresql
+- persistent-template
+- servant
+- servant-server
+- servant-auth
+- servant-auth-server
+- warp
+
+library:
+  source-dirs: src
+  default-extensions:
+  - DataKinds
+  - DeriveAnyClass
+  - DeriveGeneric
+  - DerivingStrategies
+  - FlexibleContexts
+  - FlexibleInstances
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - LambdaCase
+  - NoImplicitPrelude
+  - OverloadedStrings
+  - QuasiQuotes
+  - RecordWildCards
+  - StandaloneDeriving
+  - TemplateHaskell
+  - TypeFamilies
+  - TypeOperators
+  - UndecidableInstances
+
+executables:
+  ride-rio-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - ride-rio
+
+tests:
+  ride-rio-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - ride-rio
