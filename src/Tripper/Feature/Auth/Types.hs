@@ -1,8 +1,4 @@
-module Tripper.Auth.Types
-( Login (..)
-, CurrentUser (..)
-, mkCurrentUser
-) where
+module Tripper.Feature.Auth.Types where
 
 import Data.Aeson
 import Database.Persist

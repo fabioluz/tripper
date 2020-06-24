@@ -1,14 +1,14 @@
-module Tripper.Client.Server where
+module Tripper.Feature.Client.Server (ClientAPI, clientServer) where
 
 import RIO
-import Servant (JSON, NoContent (..), PostCreated, ReqBody, ServerT, (:>))
-import Servant.Auth.Server (AuthResult)
-import Tripper.Auth.Types (CurrentUser)
-import Tripper.Config (HasConfig)
-import Tripper.Error (orThrow, http422)
-import Tripper.Client.Types (CreateClient, createClient)
-import Tripper.Client.DB (insertClientAndAdmin)
-import Tripper.User.Types (CreateUser, fromCreateClient, createUser)
+import Servant
+import Servant.Auth.Server
+import Tripper.Config
+import Tripper.Feature.Auth.Types
+import Tripper.Feature.Client.DB
+import Tripper.Feature.Client.Types
+import Tripper.Feature.Shared
+import Tripper.Feature.User.Types
 
 type ClientAPI
   = "clients"

@@ -4,8 +4,9 @@ import Control.Monad.Except
 import RIO hiding (Handler)
 import Servant
 import Servant.Auth.Server
-import Tripper.Auth
-import Tripper.Client.Server 
+import Tripper.Feature.Auth.Types
+import Tripper.Feature.Auth.Server
+import Tripper.Feature.Client.Server 
 import Tripper.Config
 
 type AppContext = '[CookieSettings, JWTSettings]

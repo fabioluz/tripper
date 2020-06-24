@@ -1,15 +1,14 @@
-module Tripper.Client.DB (insertClientAndAdmin) where
+module Tripper.Feature.Client.DB (insertClientAndAdmin) where
 
+import Database.Persist
 import RIO
 import RIO.Time
-import Database.Persist
-import Tripper.Client.Types
-import Tripper.DB 
-import Tripper.Error
-import Tripper.Models
+import Tripper.DB
+import Tripper.Feature.Client.Types
 import Tripper.Feature.Shared
-import Tripper.User.DB
-import Tripper.User.Types
+import Tripper.Feature.User.DB
+import Tripper.Feature.User.Types
+import Tripper.Models
 
 insertClientAndAdmin :: HasPool env => ValidCreateClient -> ValidCreateUser -> RIO env ()
 insertClientAndAdmin validClient validUser = runDb $ do

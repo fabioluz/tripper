@@ -1,21 +1,20 @@
-module Tripper.Client.Types
-( CreateClient (..)
-, createClient
-, ValidCreateClient (..)
-) where
+module Tripper.Feature.Client.Types where
 
+import Data.Aeson
 import RIO
-import Data.Aeson (FromJSON, ToJSON)
 import Tripper.Feature.Shared
+
 data CreateClient = CreateClient
   { clientName    :: Text
   , adminEmail    :: Text
   , adminPassword :: Text
   , adminName     :: Text
-  } deriving (Show, Generic, FromJSON, ToJSON)
+  }
+  deriving (Show, Generic, FromJSON, ToJSON)
 
 data ValidCreateClient = ValidCreateClient
-  { validClientName :: Text }
+  { validClientName :: Text
+  }
 
 createClient :: CreateClient -> Either ValidationErrors ValidCreateClient
 createClient CreateClient {..} = do

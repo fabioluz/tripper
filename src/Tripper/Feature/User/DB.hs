@@ -1,12 +1,12 @@
-module Tripper.User.DB where
+module Tripper.Feature.User.DB where
 
 import RIO
-import RIO.Time (getCurrentTime)
-import Database.Persist (Entity, getBy)
-import Tripper.DB (HasPool, runDb)
-import Tripper.Models (ClientId, User (..), Unique (..))
+import RIO.Time 
+import Database.Persist
+import Tripper.DB
+import Tripper.Models
 import Tripper.Feature.Shared
-import Tripper.User.Types (ValidCreateUser (..))
+import Tripper.Feature.User.Types
 
 mkUser :: ClientId -> ValidCreateUser -> RIO env User
 mkUser clientId ValidCreateUser {..} = do

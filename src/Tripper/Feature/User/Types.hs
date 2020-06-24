@@ -1,10 +1,10 @@
-module Tripper.User.Types where
+module Tripper.Feature.User.Types where
 
 import RIO
-import RIO.Time (getCurrentTime)
-import Data.Aeson (FromJSON, ToJSON)
-import Tripper.Models (ClientId, User (..))
-import Tripper.Client.Types (CreateClient (..))
+import RIO.Time 
+import Data.Aeson 
+import Tripper.Models
+import Tripper.Feature.Client.Types (CreateClient (..))
 import Tripper.Feature.Shared
 
 data CreateUser = CreateUser

@@ -1,4 +1,4 @@
-module Tripper.Auth.Server (AuthAPI, authServer) where
+module Tripper.Feature.Auth.Server (AuthAPI, authServer) where
 
 import Control.Monad.Trans.Maybe
 import Database.Persist
@@ -6,21 +6,23 @@ import RIO
 import RIO.Time
 import Servant
 import Servant.Auth.Server
-import Tripper.Auth.Types
 import Tripper.Config
 import Tripper.DB
-import Tripper.Models
+import Tripper.Feature.Auth.Types
 import Tripper.Feature.Shared
-import Tripper.User.DB
-
--- Represents the headers for the authorization response
-type AuthHeaders = '[Header "Set-Cookie" SetCookie, Header "Set-Cookie" SetCookie]
+import Tripper.Feature.User.DB
+import Tripper.Models
 
 -- Represets the response type for the authorization endpoint
-type AuthResponse = Headers AuthHeaders NoContent
+type AuthResponse = Headers '[ Header "Set-Cookie" SetCookie
+                             , Header "Set-Cookie" SetCookie
+                             ] NoContent
 
 -- The contract of the Authentication API. This API is public
-type AuthAPI = "login" :> ReqBody '[JSON] Login :> Post '[JSON] AuthResponse
+type AuthAPI
+  = "login"
+    :> ReqBody '[JSON] Login
+    :> Post '[JSON] AuthResponse
 
 authServer :: HasConfig env => CookieSettings -> JWTSettings -> ServerT AuthAPI (RIO env)
 authServer = loginHandler

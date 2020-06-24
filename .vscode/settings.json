@@ -1,6 +1,6 @@
 {
   "workbench.colorTheme": "Default Dark+",
-  "editor.fontFamily": "Hasklig",
+  "editor.fontFamily": "Fira Code",
   "editor.fontLigatures": true,
   "editor.tabSize": 2,
   "editor.renderIndentGuides": false,
@@ -9,7 +9,7 @@
       {
         "scope": [ 
           "entity.name.namespace.haskell",
-          "meta.import.haskell" 
+          "meta.import.haskell",
         ],
         "settings": {
           "foreground": "#D4D4D4"
@@ -28,7 +28,7 @@
       {
         "scope": [
           "storage.type.haskell",
-          "constant.other.haskell"
+          "constant.other.haskell",
         ],
         "settings": {
           "foreground": "#4EC9B0",

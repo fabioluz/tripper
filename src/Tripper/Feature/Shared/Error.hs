@@ -1,9 +1,9 @@
-module Tripper.Error where
+module Tripper.Feature.Shared.Error where
 
+import Data.Aeson
 import RIO
-import Data.Aeson (encode)
-import Servant (ServerError (..), err422, err500)
-import Tripper.Feature.Shared
+import Servant
+import Tripper.Feature.Shared.Validators.Error
 
 lbshow :: Show a => a -> LByteString
 lbshow = fromStrictBytes . encodeUtf8 . tshow
