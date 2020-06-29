@@ -3,7 +3,7 @@ module Tripper.Feature.Client.DB (insertClientAndAdmin) where
 import Database.Persist
 import RIO
 import RIO.Time
-import Tripper.DB
+import Tripper.Config
 import Tripper.Feature.Client.Types
 import Tripper.Feature.Shared
 import Tripper.Feature.User.DB

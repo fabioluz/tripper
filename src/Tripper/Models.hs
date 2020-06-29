@@ -1,16 +1,11 @@
 module Tripper.Models where
 
-import RIO
-import RIO.Time (UTCTime)
-import Data.UUID (UUID)
-import Database.Persist.Sql (ConnectionPool, SqlPersistT, runMigration, runSqlPool)
+import Data.UUID
+import Database.Persist.Sql
 import Database.Persist.TH
-  ( mkMigrate
-  , mkPersist
-  , persistLowerCase
-  , share
-  , sqlSettings
-  )
+import RIO
+import RIO.Time
+import Tripper.Config
 import Tripper.Feature.Shared
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
@@ -35,3 +30,8 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 
 runMigrations :: ConnectionPool -> IO ()
 runMigrations = runSqlPool $ runMigration migrateAll
+
+runDb :: HasPool env => SqlPersistT IO a -> RIO env a
+runDb query = do
+  pool <- view poolL
+  liftIO $ runSqlPool query pool

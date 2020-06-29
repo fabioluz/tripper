@@ -4,9 +4,8 @@ import RIO
 import Network.Wai.Handler.Warp (run)
 import Servant (Context (..))
 import Servant.Auth.Server (JWTSettings (..), defaultJWTSettings, defaultCookieSettings, generateKey)
-import Tripper.DB (createPool, destroyPool)
-import Tripper.Config (Config (..))
-import Tripper.Models (runMigrations)
+import Tripper.Config
+import Tripper.Models
 import Tripper.Server (app)
 
 main :: IO ()
@@ -30,9 +29,10 @@ shutdownApp cfg = do
 
 acquireConfig :: IO Config
 acquireConfig = do
-  port <- pure 8090
+  port <- lookupSetting "PORT" 8090
   pool <- createPool
   pure Config
     { configPort = port
     , configPool = pool
     }
+

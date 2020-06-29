@@ -3,7 +3,7 @@ module Tripper.Feature.User.DB where
 import RIO
 import RIO.Time 
 import Database.Persist
-import Tripper.DB
+import Tripper.Config
 import Tripper.Models
 import Tripper.Feature.Shared
 import Tripper.Feature.User.Types

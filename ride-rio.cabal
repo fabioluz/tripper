@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e002a3a404f5eccb29bc63e7c9b6a52c9730a853adcff155f6a87f3eff16757a
+-- hash: 81106b433bff569e7ecbf6d21268751b32d8015bf93051f4d66c317ceeb97f12
 
 name:           ride-rio
 version:        0.1.0.0
@@ -28,7 +28,7 @@ source-repository head
 library
   exposed-modules:
       Tripper.Config
-      Tripper.DB
+      Tripper.Feature.Auth.DB
       Tripper.Feature.Auth.Server
       Tripper.Feature.Auth.Types
       Tripper.Feature.Client.DB
