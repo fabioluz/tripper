@@ -16,7 +16,7 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
     updatedAt UTCTime
     deriving Show Eq
 
-  User json sql=users
+  User sql=users
     Id        UUID      default=uuid_generate_v4()
     clientId  ClientId
     email     Email
@@ -27,6 +27,8 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
     UniqueUserEmail email
     deriving Show Eq
 |]
+
+type UserEntity = Entity User
 
 runMigrations :: ConnectionPool -> IO ()
 runMigrations = runSqlPool $ runMigration migrateAll

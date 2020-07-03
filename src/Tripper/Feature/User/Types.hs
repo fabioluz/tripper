@@ -1,11 +1,11 @@
 module Tripper.Feature.User.Types where
 
+import Data.Aeson
 import RIO
-import RIO.Time 
-import Data.Aeson 
-import Tripper.Models
+import RIO.Time
 import Tripper.Feature.Client.Types (CreateClient (..))
 import Tripper.Feature.Shared
+import Tripper.Models
 
 data CreateUser = CreateUser
   { email    :: Text
@@ -20,8 +20,7 @@ data ValidCreateUser = ValidCreateUser
   }
 
 createUser :: CreateUser -> Either ValidationErrors ValidCreateUser
-createUser CreateUser {..} =
-  ValidCreateUser
+createUser CreateUser {..} = ValidCreateUser
   <$> validateEmail email
   <*> validatePassword password
   <*> validateName name
@@ -41,4 +40,26 @@ fromCreateClient CreateClient {..} = CreateUser
   , password = adminPassword
   , name     = adminName
   }
+
+-- |
+-- | Outputs
+-- |
+
+newtype UserOutput = UserOutput (Entity User)
+
+instance ToJSON UserOutput where
+  toJSON userOutput = object
+    [ "userId"    .= userId 
+    , "clientId"  .= userClientId
+    , "email"     .= userEmail
+    , "name"      .= userName
+    , "createdAt" .= userCreatedAt
+    , "updatedAt" .= userUpdatedAt
+    ]
+    where
+      UserOutput entity  = userOutput
+      Entity userId user = entity
+      User {..}          = user
+
+
 

@@ -17,7 +17,7 @@ insertClientAndAdmin validClient validUser = runDb $ do
 
   user       <- liftRIO $ mkUser clientId validUser
   emailInUse <- isJust <$> checkUnique user
-  when emailInUse $ do
+  when emailInUse $
     throwIO $ http422 emailInUseError
 
   userId <- insert user

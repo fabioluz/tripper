@@ -10,7 +10,7 @@ import Tripper.Models
 getUserByCredentials :: HasPool env => Login -> RIO env (Maybe (Entity User))
 getUserByCredentials Login {..} = runDb $ do
   mayUser <- getBy $ UniqueUserEmail $ Email email
-  pure $ mayUser >>= \entityUser -> do
+  pure $ mayUser >>= \entityUser ->
     if checkPassword password (userPassword (entityVal entityUser))
       then Just entityUser
       else Nothing

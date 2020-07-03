@@ -7,14 +7,23 @@ import Servant.Auth.Server
 import Tripper.Feature.Auth.Types
 import Tripper.Feature.Auth.Server
 import Tripper.Feature.Client.Server 
+import Tripper.Feature.User.Server
 import Tripper.Config
+
+type JWTAuth = Auth '[JWT] CurrentUser
 
 type AppContext = '[CookieSettings, JWTSettings]
 
 proxyContext :: Proxy AppContext
 proxyContext = Proxy
 
-type AppAPI = AuthAPI :<|> Auth '[JWT] CurrentUser :> ClientAPI
+type PublicAPI = AuthAPI
+
+type PrivateAPI
+    =  JWTAuth :> ClientAPI
+  :<|> JWTAuth :> UserAPI
+
+type AppAPI = PublicAPI :<|> PrivateAPI
 
 proxyAPI :: Proxy AppAPI
 proxyAPI = Proxy
@@ -26,7 +35,10 @@ convertApp :: Config -> RIO Config a -> Handler a
 convertApp cfg = Handler . ExceptT . try . runApp cfg
 
 configServer :: CookieSettings -> JWTSettings -> ServerT AppAPI (RIO Config)
-configServer cs jwts = authServer cs jwts :<|> clientServer
+configServer cs jwts
+    =  authServer cs jwts
+  :<|> clientServer
+  :<|> userServer
 
 server :: CookieSettings -> JWTSettings -> Config -> Server AppAPI
 server cs jwts cfg = hoistServerWithContext proxyAPI proxyContext

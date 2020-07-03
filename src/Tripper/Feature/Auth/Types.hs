@@ -12,12 +12,12 @@ data Login = Login
   } deriving (Generic, FromJSON)
 
 data CurrentUser = CurrentUser
-  { currentClientId :: ClientId
-  , currentUserId   :: UserId
+  { curClientId :: ClientId
+  , curUserId   :: UserId
   } deriving (Generic, FromJSON, ToJSON, FromJWT, ToJWT)
 
 mkCurrentUser :: Entity User -> CurrentUser
 mkCurrentUser (Entity key val) = CurrentUser
-  { currentClientId = userClientId val
-  , currentUserId   = key
+  { curClientId = userClientId val
+  , curUserId   = key
   }

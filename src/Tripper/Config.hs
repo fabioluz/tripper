@@ -1,11 +1,11 @@
 module Tripper.Config where
 
-import RIO
 import Control.Monad.Logger
-import Data.Pool 
+import Data.Pool
 import Database.Persist.Postgresql
-import System.Environment
+import RIO
 import Servant.Auth.Server
+import System.Environment
 
 
 data Config = Config
@@ -24,10 +24,10 @@ class HasPool env where
 instance HasPool Config where
   poolL = lens configPool $ \cfg pool -> cfg { configPool = pool }
 
-defaultConnStr :: ConnectionString 
+defaultConnStr :: ConnectionString
 defaultConnStr = "host=127.0.0.1 port=5432 user=postgres password=102030 dbname=ride connect_timeout=10"
 
-createPool :: IO ConnectionPool 
+createPool :: IO ConnectionPool
 createPool = do
   connStr <- lookupSetting "CONN_STR" defaultConnStr
   runStdoutLoggingT $ createPostgresqlPool connStr 10
@@ -52,4 +52,4 @@ lookupSetting :: Read a => String -> a -> IO a
 lookupSetting env def = do
   var <- lookupEnv env
   pure $ fromMaybe def $ var >>= readMaybe
-  
+

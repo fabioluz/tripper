@@ -10,7 +10,7 @@
         "scope": [ 
           "entity.name.namespace.haskell",
           "meta.import.haskell",
-          "source.haskell"
+          "source.other.haskell",
         ],
         "settings": {
           "foreground": "#D4D4D4"
