@@ -57,7 +57,7 @@ instance PersistField Password where
   toPersistValue = PersistText . unPassword
   fromPersistValue = \case
     PersistText v -> Right $ Password v
-    _             -> Left "NotValidPasswordType"
+    _             -> Left  $ "NotValidPasswordType"
 
 instance PersistFieldSql Password where
   sqlType _ = SqlString

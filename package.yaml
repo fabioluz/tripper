@@ -46,6 +46,7 @@ library:
   - DeriveAnyClass
   - DeriveGeneric
   - DerivingStrategies
+  - DuplicatedRecordFields
   - FlexibleContexts
   - FlexibleInstances
   - GADTs

@@ -5,6 +5,7 @@ import Servant
 import Servant.Auth.Server
 import Tripper.Config
 import Tripper.Models
+import Tripper.Feature.Shared
 import Tripper.Feature.Auth.Types
 import Tripper.Feature.User.DB
 import Tripper.Feature.User.Types
@@ -17,12 +18,16 @@ type UserAPI
   :<|> "users"
       :> Capture "userId" UserId 
       :> Get '[JSON] UserOutput
+  :<|> "users"
+      :> ReqBody '[JSON] CreateUser
+      :> PostCreated '[JSON] NoContent
 
 userServer :: HasConfig env => AuthResult CurrentUser -> ServerT UserAPI (RIO env)
 userServer (Authenticated curUser)
     =  getMeHandler curUser 
   :<|> getHandler curUser
   :<|> getByIdHandler curUser
+  :<|> postHandler curUser
 
 userServer _ = throwAll err401
 
@@ -44,3 +49,15 @@ getByIdHandler CurrentUser {..} userId = do
   case mayUser of
     Nothing   -> throwIO err404
     Just user -> pure $ UserOutput user
+
+postHandler :: HasConfig env => CurrentUser -> CreateUser -> RIO env NoContent
+postHandler CurrentUser {..} input = do
+  user <- createUser input `orThrow` http422
+  insertUser curClientId user
+  pure NoContent
+
+putHandler :: HasConfig env => CurrentUser -> UpdateUser -> RIO env NoContent
+putHandler CurrentUser {..} input = do
+  user <- updateUser input `orThrow` http422
+  updateUser curClientId user
+  pure NoContent

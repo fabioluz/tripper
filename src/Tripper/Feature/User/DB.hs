@@ -30,6 +30,15 @@ getUsers clientId = runDb $ selectList [UserClientId ==. clientId] []
 
 getUserById :: HasPool env => ClientId -> UserId -> RIO env (Maybe (Entity User))
 getUserById clientId userId = runDb $ selectFirst
-  [ UserClientId ==. clientId
-  , UserId ==. userId
-  ] []
+  [UserClientId ==. clientId, UserId ==. userId]
+  []
+
+insertUser :: HasPool env => ClientId -> ValidCreateUser -> RIO env UserId
+insertUser clientId user = do
+  user <- mkUser clientId user
+  runDb $ insert user
+
+updateUser :: HasPool env => ClientId -> UserId -> ValidUpdateUser -> RIO env ()
+updateUser clientId userId ValidUpdateUser {..} = runDb $ updateWhere
+  [ UserClientId ==. clientId, UserId ==. userId ]
+  [ UserName =. name ]

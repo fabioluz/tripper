@@ -25,6 +25,18 @@ createUser CreateUser {..} = ValidCreateUser
   <*> validatePassword password
   <*> validateName name
 
+newtype UpdateUser = UpdateUser { name :: Text }
+  deriving (Show, Generic, FromJSON)
+
+newtype ValidUpdateUser = ValidUpdateUser { name :: Text }
+
+updateUser :: UpdateUser -> Either ValidationErrors ValidUpdateUser
+updateUser UpdateUser {..} = ValidUpdateUser <$> validateName name
+
+-- |
+-- | Validatation
+-- |
+
 validateEmail :: Text -> Either ValidationErrors Email
 validateEmail = mapValError "email" . mkEmail
 

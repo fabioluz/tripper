@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4c6977fd69a304c5de2a177dfdc00fc72055270213c42deafa3535aea9d6a1d2
+-- hash: b5065d92e47b77247353af7668190682cc6eba0d602e734410bac2839fc8ecf4
 
 name:           ride-rio
 version:        0.1.0.0
@@ -49,7 +49,7 @@ library
       Paths_ride_rio
   hs-source-dirs:
       src
-  default-extensions: DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies FlexibleContexts FlexibleInstances GADTs GeneralizedNewtypeDeriving LambdaCase NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
+  default-extensions: DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicatedRecordFields FlexibleContexts FlexibleInstances GADTs GeneralizedNewtypeDeriving LambdaCase NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
   build-depends:
       aeson
     , base >=4.7 && <5
