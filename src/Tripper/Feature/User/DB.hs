@@ -18,6 +18,7 @@ mkUser clientId ValidCreateUser {..} = do
     , userPassword  = password
     , userEmail     = validUserEmail
     , userName      = validUserName
+    , userNickName  = validUserNickName
     , userCreatedAt = now
     , userUpdatedAt = now
     }
@@ -39,6 +40,8 @@ insertUser clientId user = do
   runDb $ insert user
 
 updateUser :: HasPool env => ClientId -> UserId -> ValidUpdateUser -> RIO env ()
-updateUser clientId userId ValidUpdateUser {..} = runDb $ updateWhere
-  [ UserClientId ==. clientId, UserId ==. userId ]
-  [ UserName =. name ]
+updateUser clientId userId ValidUpdateUser {..} = do
+  now <- getCurrentTime
+  runDb $ updateWhere
+    [UserClientId ==. clientId, UserId ==. userId]
+    [UserName =. name, UserUpdatedAt =. now]

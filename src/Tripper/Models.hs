@@ -22,13 +22,12 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
     email     Email
     password  Password
     name      Text
+    nickName  Text Maybe
     createdAt UTCTime
     updatedAt UTCTime
     UniqueUserEmail email
     deriving Show Eq
 |]
-
-type UserEntity = Entity User
 
 runMigrations :: ConnectionPool -> IO ()
 runMigrations = runSqlPool $ runMigration migrateAll

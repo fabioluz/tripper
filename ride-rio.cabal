@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b5065d92e47b77247353af7668190682cc6eba0d602e734410bac2839fc8ecf4
+-- hash: 8923802f26cf0d81d6ebdd0492b85337a19d32021af1550aabee696b8437bf8b
 
 name:           ride-rio
 version:        0.1.0.0
@@ -37,6 +37,7 @@ library
       Tripper.Feature.Shared
       Tripper.Feature.Shared.Error
       Tripper.Feature.Shared.Types
+      Tripper.Feature.Shared.Utils
       Tripper.Feature.Shared.Validators.Error
       Tripper.Feature.Shared.Validators.Text
       Tripper.Feature.User.DB
@@ -49,7 +50,7 @@ library
       Paths_ride_rio
   hs-source-dirs:
       src
-  default-extensions: DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicatedRecordFields FlexibleContexts FlexibleInstances GADTs GeneralizedNewtypeDeriving LambdaCase NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
+  default-extensions: DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicateRecordFields FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
   build-depends:
       aeson
     , base >=4.7 && <5

@@ -3,20 +3,27 @@ module Tripper.Feature.User.Types where
 import Data.Aeson
 import RIO
 import RIO.Time
-import Tripper.Feature.Client.Types (CreateClient (..))
+import Tripper.Feature.Client.Types (CreateClient(..))
 import Tripper.Feature.Shared
 import Tripper.Models
+
+-- |
+-- | Inputs
+-- |
 
 data CreateUser = CreateUser
   { email    :: Text
   , password :: Text
   , name     :: Text
-  } deriving (Show, Generic, FromJSON, ToJSON)
+  , nickName :: Maybe Text
+  }
+  deriving (Show, Generic, FromJSON, ToJSON)
 
 data ValidCreateUser = ValidCreateUser
   { validUserEmail    :: Email
   , validUserPassword :: Text
   , validUserName     :: Text
+  , validUserNickName :: Maybe Text
   }
 
 createUser :: CreateUser -> Either ValidationErrors ValidCreateUser
@@ -24,9 +31,11 @@ createUser CreateUser {..} = ValidCreateUser
   <$> validateEmail email
   <*> validatePassword password
   <*> validateName name
+  <*> validateNickName nickName
 
 newtype UpdateUser = UpdateUser { name :: Text }
-  deriving (Show, Generic, FromJSON)
+  deriving (Show, Generic)
+  deriving newtype FromJSON
 
 newtype ValidUpdateUser = ValidUpdateUser { name :: Text }
 
@@ -46,11 +55,15 @@ validatePassword = mapValError "password" . validateText [minLength 6]
 validateName :: Text -> Either ValidationErrors Text
 validateName = mapValError "name" . validateText [notEmpty]
 
+validateNickName :: Maybe Text -> Either ValidationErrors (Maybe Text)
+validateNickName = mapM $ mapValError "nickName" . validateText [notEmpty]
+
 fromCreateClient :: CreateClient -> CreateUser
 fromCreateClient CreateClient {..} = CreateUser
   { email    = adminEmail
   , password = adminPassword
   , name     = adminName
+  , nickName = Nothing
   }
 
 -- |
@@ -61,10 +74,11 @@ newtype UserOutput = UserOutput (Entity User)
 
 instance ToJSON UserOutput where
   toJSON userOutput = object
-    [ "userId"    .= userId 
+    [ "userId"    .= userId
     , "clientId"  .= userClientId
     , "email"     .= userEmail
     , "name"      .= userName
+    , "nickName"  .= userNickName
     , "createdAt" .= userCreatedAt
     , "updatedAt" .= userUpdatedAt
     ]
