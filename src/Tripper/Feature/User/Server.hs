@@ -27,7 +27,7 @@ type UserAPI
       :> ReqBody '[JSON] UpdateUser
       :> Put '[JSON] NoContent
 
-userServer :: HasConfig env => AuthResult CurrentUser -> ServerT UserAPI (RIO env)
+userServer ::AuthResult CurrentUser -> ServerT UserAPI (RIO Config)
 userServer (Authenticated curUser)
     =  getMeHandler curUser 
   :<|> getHandler curUser
@@ -37,26 +37,26 @@ userServer (Authenticated curUser)
 
 userServer _ = throwAll err401
 
-getHandler :: HasConfig env => CurrentUser -> RIO env [UserOutput]
+getHandler :: CurrentUser -> RIO Config [UserOutput]
 getHandler CurrentUser {..} = do
   users <- DB.getUsers curClientId
   pure $ UserOutput <$> users
 
-getMeHandler :: HasConfig env => CurrentUser -> RIO env UserOutput
+getMeHandler :: CurrentUser -> RIO Config UserOutput
 getMeHandler CurrentUser {..} = do
   mayUser <- DB.getUserById curClientId curUserId
   case mayUser of
     Nothing   -> throwIO http404
     Just user -> pure $ UserOutput user
 
-getByIdHandler :: HasConfig env => CurrentUser -> UserId -> RIO env UserOutput
+getByIdHandler :: CurrentUser -> UserId -> RIO Config UserOutput
 getByIdHandler CurrentUser {..} userId = do
   mayUser <- DB.getUserById curClientId userId
   case mayUser of
     Nothing   -> throwIO http404
     Just user -> pure $ UserOutput user
 
-postHandler :: HasConfig env => CurrentUser -> CreateUser -> RIO env NoContent
+postHandler :: CurrentUser -> CreateUser -> RIO Config NoContent
 postHandler CurrentUser {..} input = do
   userRes <- toRIO $ createUser input
   case userRes of
@@ -65,7 +65,7 @@ postHandler CurrentUser {..} input = do
       DB.insertUser curClientId user
       pure NoContent
 
-putHandler :: HasConfig env => CurrentUser -> UserId -> UpdateUser -> RIO env NoContent
+putHandler :: CurrentUser -> UserId -> UpdateUser -> RIO Config NoContent
 putHandler CurrentUser {..} userId input = do
   userRes <- toRIO $ updateUser input
   case userRes of

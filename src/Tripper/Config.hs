@@ -60,13 +60,3 @@ lookupSetting :: Read a => String -> a -> IO a
 lookupSetting env def = do
   var <- lookupEnv env
   pure $ fromMaybe def $ var >>= readMaybe
-
--- |
--- | Final Configuration
--- | 
-
-class (HasPool env, HasLogFunc env) => HasConfig env where
-  configL :: Lens' env Config
-
-instance HasConfig Config where
-  configL = id

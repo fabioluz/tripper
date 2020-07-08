@@ -40,7 +40,7 @@ insertUser clientId user = do
   user <- mkUser clientId user
   runDb $ insert user
 
-updateUser :: (HasPool env, HasLogFunc env) => ClientId -> UserId -> ValidUpdateUser -> RIO env ()
+updateUser :: HasPool env => ClientId -> UserId -> ValidUpdateUser -> RIO env ()
 updateUser clientId userId ValidUpdateUser {..} = do
   now <- getCurrentTime
   runDb $ updateWhere

@@ -20,12 +20,12 @@ type AuthResponse = Headers '[ Header "Set-Cookie" SetCookie
 -- The contract of the Authentication API. This API is public
 type AuthAPI = "login" :> ReqBody '[JSON] Login :> Post '[JSON] AuthResponse
 
-authServer :: HasConfig env => CookieSettings -> JWTSettings -> ServerT AuthAPI (RIO env)
+authServer :: CookieSettings -> JWTSettings -> ServerT AuthAPI (RIO Config)
 authServer = loginHandler
 
 -- | Checks input credentials and generates JWT token if they are valid.
 -- | Otherwise, returns 401
-loginHandler :: HasConfig env => CookieSettings -> JWTSettings -> Login -> RIO env AuthResponse
+loginHandler :: CookieSettings -> JWTSettings -> Login -> RIO Config AuthResponse
 loginHandler baseCS jwts input = do
   mayCookies <- authenticateUser baseCS jwts input
   case mayCookies of
@@ -36,14 +36,13 @@ loginHandler baseCS jwts input = do
 -- | Returns SetCookie function with JWT token if credentials are valid.
 -- | Returns nothing, otherwise.
 authenticateUser 
-  :: ( HasConfig env
-     , AddHeader "Set-Cookie" SetCookie response withOneCookie
+  :: ( AddHeader "Set-Cookie" SetCookie response withOneCookie
      , AddHeader "Set-Cookie" SetCookie withOneCookie withTwoCookies
      )
   => CookieSettings
   -> JWTSettings
   -> Login
-  -> RIO env (Maybe (response -> withTwoCookies))
+  -> RIO Config (Maybe (response -> withTwoCookies))
 authenticateUser baseCS jwts Login {..} = runMaybeT $ do
   user    <- MaybeT $ DB.getUserByEmail email
   curUser <- MaybeT $ challengePassword password user
