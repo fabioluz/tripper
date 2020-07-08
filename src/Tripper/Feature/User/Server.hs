@@ -53,7 +53,7 @@ getByIdHandler :: HasConfig env => CurrentUser -> UserId -> RIO env UserOutput
 getByIdHandler CurrentUser {..} userId = do
   mayUser <- DB.getUserById curClientId userId
   case mayUser of
-    Nothing   -> throwIO err404
+    Nothing   -> throwIO http404
     Just user -> pure $ UserOutput user
 
 postHandler :: HasConfig env => CurrentUser -> CreateUser -> RIO env NoContent

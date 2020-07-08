@@ -1,6 +1,5 @@
 module Tripper.Feature.User.DB where
 
-import Data.Aeson
 import Database.Persist
 import RIO
 import RIO.Time
@@ -26,8 +25,10 @@ mkUser clientId ValidCreateUser {..} = do
 getUserByEmail :: HasPool env => Text -> RIO env (Maybe (Entity User))
 getUserByEmail = runDb . getBy . UniqueUserEmail . Email
 
-getUsers :: HasPool env => ClientId -> RIO env [Entity User]
-getUsers clientId = runDb $ selectList [UserClientId ==. clientId] []
+getUsers :: (HasPool env, HasLogFunc env) => ClientId -> RIO env [Entity User]
+getUsers clientId = do
+  logInfo "getting all users"
+  runDb $ selectList [UserClientId ==. clientId] []
 
 getUserById :: HasPool env => ClientId -> UserId -> RIO env (Maybe (Entity User))
 getUserById clientId userId = runDb $ selectFirst
@@ -39,9 +40,12 @@ insertUser clientId user = do
   user <- mkUser clientId user
   runDb $ insert user
 
-updateUser :: HasPool env => ClientId -> UserId -> ValidUpdateUser -> RIO env ()
+updateUser :: (HasPool env, HasLogFunc env) => ClientId -> UserId -> ValidUpdateUser -> RIO env ()
 updateUser clientId userId ValidUpdateUser {..} = do
   now <- getCurrentTime
   runDb $ updateWhere
-    [UserClientId ==. clientId, UserId ==. userId]
-    [UserName =. name, UserUpdatedAt =. now]
+    [ UserClientId ==. clientId, UserId ==. userId ]
+    [ UserName =. validUserName
+    , UserNickName =. validUserNickName
+    , UserUpdatedAt =. now
+    ]

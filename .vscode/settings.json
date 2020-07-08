@@ -9,8 +9,7 @@
       {
         "scope": [ 
           "entity.name.namespace.haskell",
-          "meta.import.haskell",
-          "source.other.haskell",
+          "meta.import.haskell"
         ],
         "settings": {
           "foreground": "#D4D4D4"
@@ -23,16 +22,16 @@
           "string.quoted.double"
         ],
         "settings": {
-          "foreground": "#C58971",
+          "foreground": "#C58971"
         }
       },
       {
         "scope": [
           "storage.type.haskell",
-          "constant.other.haskell",
+          "constant.other.haskell"
         ],
         "settings": {
-          "foreground": "#4EC9B0",
+          "foreground": "#4EC9B0"
         }
       },
       {
@@ -41,7 +40,7 @@
           "keyword.operator.arrow.left.haskell"
         ],
         "settings": {
-          "foreground": "#C586C0",
+          "foreground": "#C586C0"
         }
       },
       {

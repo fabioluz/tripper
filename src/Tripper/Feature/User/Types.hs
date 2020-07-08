@@ -17,7 +17,7 @@ data CreateUser = CreateUser
   , name     :: Text
   , nickName :: Maybe Text
   }
-  deriving (Show, Generic, FromJSON, ToJSON)
+  deriving (Show, Generic, FromJSON)
 
 data ValidCreateUser = ValidCreateUser
   { validUserEmail    :: Email
@@ -33,14 +33,21 @@ createUser CreateUser {..} = ValidCreateUser
   <*> validateName name
   <*> validateNickName nickName
 
-newtype UpdateUser = UpdateUser { name :: Text }
-  deriving (Show, Generic)
-  deriving newtype FromJSON
+data UpdateUser = UpdateUser
+  { name     :: Text 
+  , nickName :: Maybe Text
+  }
+  deriving (Show, Generic, FromJSON)
 
-newtype ValidUpdateUser = ValidUpdateUser { name :: Text }
+data ValidUpdateUser = ValidUpdateUser
+  { validUserName     :: Text
+  , validUserNickName :: Maybe Text
+  }
 
 updateUser :: UpdateUser -> Either ValidationErrors ValidUpdateUser
-updateUser UpdateUser {..} = ValidUpdateUser <$> validateName name
+updateUser UpdateUser {..} = ValidUpdateUser
+  <$> validateName name
+  <*> validateNickName nickName
 
 -- |
 -- | Validatation

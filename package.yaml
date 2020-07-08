@@ -24,11 +24,11 @@ dependencies:
 - aeson
 - cryptonite
 - rio
+- rio-orphans
 - uuid
 - mtl
 - transformers
 - resource-pool
-- monad-logger
 - path-pieces
 - persistent
 - persistent-postgresql
@@ -37,6 +37,7 @@ dependencies:
 - servant-server
 - servant-auth
 - servant-auth-server
+- wai
 - warp
 
 library:

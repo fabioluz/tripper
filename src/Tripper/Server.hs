@@ -28,11 +28,8 @@ type AppAPI = PublicAPI :<|> PrivateAPI
 proxyAPI :: Proxy AppAPI
 proxyAPI = Proxy
 
-runApp :: Config -> RIO Config a -> IO a
-runApp cfg = flip runReaderT cfg . unRIO
-
 convertApp :: Config -> RIO Config a -> Handler a
-convertApp cfg = Handler . ExceptT . try . runApp cfg
+convertApp cfg = Handler . ExceptT . try . runRIO cfg
 
 configServer :: CookieSettings -> JWTSettings -> ServerT AppAPI (RIO Config)
 configServer cs jwts
@@ -46,3 +43,4 @@ server cs jwts cfg = hoistServerWithContext proxyAPI proxyContext
 
 app :: Context AppContext -> CookieSettings -> JWTSettings -> Config -> Application
 app ctx cs jwts = serveWithContext proxyAPI ctx . server cs jwts
+  
