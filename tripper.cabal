@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ce5958b4bf70fbe9a4b640d0fbee3a780b54cc5163ac4785152991f94b76fe1b
+-- hash: 9b9c099a223f5309bf32a2755114b9e4cdbed93c5bdf117a6c19825cea5a6640
 
 name:           tripper
 version:        0.1.0.0
@@ -28,7 +28,6 @@ source-repository head
 library
   exposed-modules:
       Tripper.Config
-      Tripper.Feature.Auth.DB
       Tripper.Feature.Auth.Server
       Tripper.Feature.Auth.Types
       Tripper.Feature.Client.DB
@@ -50,7 +49,7 @@ library
       Paths_tripper
   hs-source-dirs:
       src
-  default-extensions: DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicateRecordFields FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
+  default-extensions: DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicateRecordFields FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses NamedFieldPuns NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
   build-depends:
       aeson
     , base >=4.7 && <5

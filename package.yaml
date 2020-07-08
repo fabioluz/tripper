@@ -55,6 +55,7 @@ library:
   - GeneralizedNewtypeDeriving
   - LambdaCase
   - MultiParamTypeClasses 
+  - NamedFieldPuns
   - NoImplicitPrelude
   - OverloadedStrings
   - QuasiQuotes

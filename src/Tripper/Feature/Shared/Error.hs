@@ -14,6 +14,9 @@ toEither = maybe (Left ()) Right
 orThrow :: Either e a -> (e -> ServerError) -> RIO env a
 orThrow e f = either (throwIO . f) pure e
 
+http401 :: ServerError
+http401 = err401
+
 http404 :: ServerError
 http404 = err404
 

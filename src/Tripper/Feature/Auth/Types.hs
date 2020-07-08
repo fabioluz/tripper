@@ -6,18 +6,20 @@ import RIO
 import Servant.Auth.Server
 import Tripper.Models
 
+-- | Represents the input for login
 data Login = Login
   { email    :: Text
   , password :: Text
   } deriving (Generic, FromJSON)
 
+-- | Represents logged in user 
 data CurrentUser = CurrentUser
   { curClientId :: ClientId
   , curUserId   :: UserId
   } deriving (Generic, FromJSON, ToJSON, FromJWT, ToJWT)
 
 mkCurrentUser :: Entity User -> CurrentUser
-mkCurrentUser (Entity key val) = CurrentUser
-  { curClientId = userClientId val
-  , curUserId   = key
+mkCurrentUser (Entity userId user) = CurrentUser
+  { curClientId = userClientId user
+  , curUserId   = userId
   }
