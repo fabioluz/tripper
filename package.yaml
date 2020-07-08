@@ -1,6 +1,6 @@
-name:                ride-rio
+name:                tripper
 version:             0.1.0.0
-github:              "githubuser/ride-rio"
+github:              "githubuser/fabioluz"
 license:             BSD3
 author:              "Author name here"
 maintainer:          "example@example.com"
@@ -66,7 +66,7 @@ library:
   - UndecidableInstances
 
 executables:
-  ride-rio-exe:
+  tripper-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -74,10 +74,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - ride-rio
+    - tripper
 
 tests:
-  ride-rio-test:
+  tripper-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -85,4 +85,4 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - ride-rio
+    - tripper

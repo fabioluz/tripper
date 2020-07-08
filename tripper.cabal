@@ -4,13 +4,13 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d3115292cf0b00c478f40f6d271189a49cf5c46ee02522f480da140fb29f6d0f
+-- hash: ce5958b4bf70fbe9a4b640d0fbee3a780b54cc5163ac4785152991f94b76fe1b
 
-name:           ride-rio
+name:           tripper
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/ride-rio#readme>
-homepage:       https://github.com/githubuser/ride-rio#readme
-bug-reports:    https://github.com/githubuser/ride-rio/issues
+homepage:       https://github.com/githubuser/fabioluz#readme
+bug-reports:    https://github.com/githubuser/fabioluz/issues
 author:         Author name here
 maintainer:     example@example.com
 copyright:      2020 Author name here
@@ -23,7 +23,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/ride-rio
+  location: https://github.com/githubuser/fabioluz
 
 library
   exposed-modules:
@@ -47,7 +47,7 @@ library
       Tripper.Models
       Tripper.Server
   other-modules:
-      Paths_ride_rio
+      Paths_tripper
   hs-source-dirs:
       src
   default-extensions: DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicateRecordFields FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
@@ -73,10 +73,10 @@ library
     , warp
   default-language: Haskell2010
 
-executable ride-rio-exe
+executable tripper-exe
   main-is: Main.hs
   other-modules:
-      Paths_ride_rio
+      Paths_tripper
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -90,7 +90,6 @@ executable ride-rio-exe
     , persistent-postgresql
     , persistent-template
     , resource-pool
-    , ride-rio
     , rio
     , rio-orphans
     , servant
@@ -98,16 +97,17 @@ executable ride-rio-exe
     , servant-auth-server
     , servant-server
     , transformers
+    , tripper
     , uuid
     , wai
     , warp
   default-language: Haskell2010
 
-test-suite ride-rio-test
+test-suite tripper-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_ride_rio
+      Paths_tripper
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -121,7 +121,6 @@ test-suite ride-rio-test
     , persistent-postgresql
     , persistent-template
     , resource-pool
-    , ride-rio
     , rio
     , rio-orphans
     , servant
@@ -129,6 +128,7 @@ test-suite ride-rio-test
     , servant-auth-server
     , servant-server
     , transformers
+    , tripper
     , uuid
     , wai
     , warp
