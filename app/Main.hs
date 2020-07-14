@@ -1,6 +1,6 @@
 module Main where
 
-import RIO
+import Prelude
 import qualified Tripper.Main as Tripper
 
 main :: IO ()

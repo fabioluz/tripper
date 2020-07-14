@@ -38,11 +38,13 @@ dependencies:
 - servant-auth
 - servant-auth-server
 - wai
+- wai-extra
 - warp
 
 library:
   source-dirs: src
   default-extensions:
+  - BlockArguments
   - DataKinds
   - DeriveAnyClass
   - DeriveGeneric
@@ -74,6 +76,7 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    - -fwarn-unused-imports
     dependencies:
     - tripper
 

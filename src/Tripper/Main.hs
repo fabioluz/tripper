@@ -1,11 +1,11 @@
 module Tripper.Main where
 
-import Network.Wai
 import Network.Wai.Handler.Warp
 import RIO
 import Servant
 import Servant.Auth.Server
 import Tripper.Config
+import Tripper.Middlewares
 import Tripper.Models
 import Tripper.Server
 
@@ -20,37 +20,27 @@ startApp env = do
       context = cookie :. jwt :. EmptyContext
       pool    = configPool env
       port    = configPort env
+      logger  = fst $ configLogFunc env
   runMigrations pool
-  run port $ app context cookie jwt env
+  run port
+    $ addMiddlewares env
+    $ app context cookie jwt env
 
 shutdownApp :: Config -> IO ()
-shutdownApp cfg = do
-  destroyPool (configPool cfg)
-  destroyLogFunc (configLogFunc cfg)
+shutdownApp Config {..} = do
+  destroyPool configPool
+  destroyLogFunc configLogFunc
   pure ()
 
 acquireConfig :: IO Config
 acquireConfig = do
   port    <- lookupSetting "PORT" 8090
+  env     <- lookupSetting "ENV" Development
   logFunc <- createLogFunc
   pool    <- createPool $ fst logFunc
   pure Config
     { configPort    = port
+    , configEnv     = env
     , configPool    = pool
     , configLogFunc = logFunc
     }
-
--- loggingMiddleware :: LogFunc -> Application -> Application
--- loggingMiddleware logFunc app req res = do
---   runRIO logFunc
---     $ logDebug 
---     $ mconcat 
---     [ displayShow $ httpVersion req
---     , " "
---     , displayShow $ requestMethod req
---     , " "
---     , displayShow $ fromMaybe "" $ requestHeaderHost req
---     , displayShow $ rawPathInfo req
---     , displayShow $ rawQueryString req
---     ]
---   app req res

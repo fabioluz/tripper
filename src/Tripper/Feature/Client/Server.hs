@@ -2,9 +2,7 @@ module Tripper.Feature.Client.Server (ClientAPI, clientServer) where
 
 import RIO
 import Servant
-import Servant.Auth.Server
 import Tripper.Config
-import Tripper.Feature.Auth.Types
 import Tripper.Feature.Client.DB
 import Tripper.Feature.Client.Types
 import Tripper.Feature.Shared
@@ -15,8 +13,8 @@ type ClientAPI
     :> ReqBody '[JSON] CreateClient
     :> PostCreated '[JSON] NoContent
 
-clientServer :: AuthResult CurrentUser -> ServerT ClientAPI (RIO Config)
-clientServer _ = createHandler
+clientServer :: ServerT ClientAPI (RIO Config)
+clientServer = createHandler
 
 createHandler :: CreateClient -> RIO Config NoContent
 createHandler clientInput = do

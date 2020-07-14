@@ -3,15 +3,19 @@ module Tripper.Config where
 import Data.Pool
 import Database.Persist.Postgresql hiding (LogFunc)
 import RIO
-import RIO.Orphans
+import RIO.Orphans ()
 import Servant.Auth.Server
 import System.Environment
 
 data Config = Config
   { configPort    :: Int
+  , configEnv     :: Environment
   , configPool    :: ConnectionPool
   , configLogFunc :: (LogFunc, IO ()) -- (logger, dispose function)
   }
+
+data Environment = Development | Production
+  deriving (Eq, Read)
 
 -- |
 -- | Logging

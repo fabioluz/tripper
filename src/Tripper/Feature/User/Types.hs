@@ -2,7 +2,6 @@ module Tripper.Feature.User.Types where
 
 import Data.Aeson
 import RIO
-import RIO.Time
 import Tripper.Feature.Client.Types (CreateClient(..))
 import Tripper.Feature.Shared
 import Tripper.Models

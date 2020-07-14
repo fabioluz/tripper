@@ -14,16 +14,14 @@ type JWTAuth = Auth '[JWT] CurrentUser
 
 type AppContext = '[CookieSettings, JWTSettings]
 
-proxyContext :: Proxy AppContext
-proxyContext = Proxy
-
-type PublicAPI = AuthAPI
-
-type PrivateAPI
-    =  JWTAuth :> ClientAPI
+type AppAPI
+    =  AuthAPI
+  :<|> ClientAPI
   :<|> JWTAuth :> UserAPI
 
-type AppAPI = PublicAPI :<|> PrivateAPI
+
+proxyContext :: Proxy AppContext
+proxyContext = Proxy
 
 proxyAPI :: Proxy AppAPI
 proxyAPI = Proxy
