@@ -39,4 +39,4 @@ middlewares Config {..} = case configEnv of
     logFunc = fst configLogFunc
 
 addMiddlewares :: Config -> Application -> Application
-addMiddlewares env app = foldl' (&) app (middlewares env)
+addMiddlewares env app = foldr ($) app (middlewares env)

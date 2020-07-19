@@ -43,7 +43,7 @@ instance PathPiece Email where
 
 newtype Password = Password { unPassword :: Text }
   deriving (Show, Eq, Generic)
-  deriving newtype (FromJSON, ToJSON)
+  deriving newtype (FromJSON)
 
 mkPassword :: Text -> RIO env Password
 mkPassword plain = do

@@ -54,4 +54,6 @@
       }
     ]
   },
+  "haskell.hlint.hints": ["LANGUAGE=BlockArguments"],
+  "haskell.hlint.ignore": ["Redundant $"]
 }

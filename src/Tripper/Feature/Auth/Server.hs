@@ -18,7 +18,10 @@ type AuthResponse = Headers '[ Header "Set-Cookie" SetCookie
                              ] NoContent
 
 -- The contract of the Authentication API. This API is public
-type AuthAPI = "login" :> ReqBody '[JSON] Login :> Post '[JSON] AuthResponse
+type AuthAPI
+  = "login"
+    :> ReqBody '[JSON] Login
+    :> Post '[JSON] AuthResponse
 
 authServer :: CookieSettings -> JWTSettings -> ServerT AuthAPI (RIO Config)
 authServer = loginHandler
@@ -43,18 +46,19 @@ authenticateUser
   -> JWTSettings
   -> Login
   -> RIO Config (Maybe (response -> withTwoCookies))
-authenticateUser baseCS jwts Login {..} = runMaybeT $ do
+authenticateUser baseCS jwts Login {..} = runMaybeT do
   user    <- MaybeT $ DB.getUserByEmail email
   curUser <- MaybeT $ challengePassword password user
   cs      <- MaybeT $ Just <$> updateCS baseCS
-  MaybeT $ liftIO $ acceptLogin cs jwts curUser
+  cookies <- MaybeT $ liftIO (acceptLogin cs jwts curUser)
+  pure $ cookies
 
   
 -- | Validates plain password against user's password.
 -- | Returns the current user object if password matches.
 -- | Otherwise, returns nothing.
 challengePassword :: Text -> Entity User -> RIO env (Maybe CurrentUser)
-challengePassword inputPassword userEntity = pure $
+challengePassword inputPassword userEntity = pure 
   if checkPassword inputPassword userPassword
     then Just (mkCurrentUser userEntity)
     else Nothing
@@ -67,5 +71,5 @@ updateCS :: CookieSettings -> RIO env CookieSettings
 updateCS cs = do
   now <- getCurrentTime
   let exp = Just $ addUTCTime (43800 * 60) now
-  pure $ cs { cookieExpires = exp }
+  pure cs { cookieExpires = exp }
 

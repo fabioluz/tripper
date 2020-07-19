@@ -1,4 +1,12 @@
-module Tripper.Feature.User.Types where
+module Tripper.Feature.User.Types
+( CreateUser (..)
+, ValidCreateUser (..)
+, UpdateUser (..)
+, ValidUpdateUser (..)
+, UserOutput
+, createUser
+, updateUser
+) where
 
 import Data.Aeson
 import RIO
