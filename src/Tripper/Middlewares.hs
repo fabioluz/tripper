@@ -1,5 +1,6 @@
 module Tripper.Middlewares (addMiddlewares) where
 
+import Network.HTTP.Types
 import Network.Wai
 import RIO
 import Tripper.Config
@@ -20,16 +21,22 @@ logStartRequest req = logDebug $ mconcat
   , displayBytesUtf8 $ rawQueryString req
   ]
 
--- logEndRequest :: Response -> RIO LogFunc ()
--- logEndRequest res = logDebug $ mconcat
---   [ "RESPONSE - STATUS "
---   , displayShow $ statusCode $ responseStatus res
---   ]
+logEndRequest :: Response -> RIO LogFunc ()
+logEndRequest res = logDebug $ mconcat
+  [ "RESPONSE - STATUS "
+  , displayShow $ statusCode status
+  , " "
+  , displayBytesUtf8 $ statusMessage status
+  ]
+  where
+    status = responseStatus res
 
 loggingMiddleware :: LogFunc -> Middleware
-loggingMiddleware logFunc app req res = do
+loggingMiddleware logFunc app req sendRes = do
   runRIO logFunc (logStartRequest req)
-  app req res
+  app req \res -> do
+    runRIO logFunc (logEndRequest res)
+    sendRes res
 
 middlewares :: Config -> [Middleware]
 middlewares Config {..} = case configEnv of

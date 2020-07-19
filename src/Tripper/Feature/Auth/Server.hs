@@ -51,7 +51,7 @@ authenticateUser baseCS jwts Login {..} = runMaybeT do
   curUser <- MaybeT $ challengePassword password user
   cs      <- MaybeT $ Just <$> updateCS baseCS
   cookies <- MaybeT $ liftIO (acceptLogin cs jwts curUser)
-  pure $ cookies
+  pure cookies
 
   
 -- | Validates plain password against user's password.

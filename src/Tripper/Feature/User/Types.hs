@@ -3,9 +3,10 @@ module Tripper.Feature.User.Types
 , ValidCreateUser (..)
 , UpdateUser (..)
 , ValidUpdateUser (..)
-, UserOutput
+, UserOutput (..)
 , createUser
 , updateUser
+, fromCreateClient
 ) where
 
 import Data.Aeson

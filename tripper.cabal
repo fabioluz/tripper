@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 26a8cb56496de37e382f765b71692cbc33be41d88c9df52bbb54af57cd13eaf9
+-- hash: eda2f1b4eda833ce58c726a9a1ccacebdc48af702328b3d34de8647c185d14a4
 
 name:           tripper
 version:        0.1.0.0
@@ -55,6 +55,7 @@ library
       aeson
     , base >=4.7 && <5
     , cryptonite
+    , http-types
     , mtl
     , path-pieces
     , persistent
@@ -85,6 +86,7 @@ executable tripper-exe
       aeson
     , base >=4.7 && <5
     , cryptonite
+    , http-types
     , mtl
     , path-pieces
     , persistent
@@ -117,6 +119,7 @@ test-suite tripper-test
       aeson
     , base >=4.7 && <5
     , cryptonite
+    , http-types
     , mtl
     , path-pieces
     , persistent

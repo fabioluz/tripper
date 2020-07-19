@@ -19,7 +19,6 @@ type AppAPI
   :<|> ClientAPI
   :<|> JWTAuth :> UserAPI
 
-
 proxyContext :: Proxy AppContext
 proxyContext = Proxy
 

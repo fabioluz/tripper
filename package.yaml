@@ -37,6 +37,7 @@ dependencies:
 - servant-server
 - servant-auth
 - servant-auth-server
+- http-types
 - wai
 - wai-extra
 - warp
