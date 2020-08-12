@@ -1,6 +1,7 @@
 module Tripper.Feature.Auth.Server (AuthAPI, authServer) where
 
 import Control.Monad.Trans.Maybe
+import Control.Monad.Except
 import RIO
 import RIO.Time
 import Servant
@@ -12,46 +13,33 @@ import Tripper.Models
 
 import qualified Tripper.Feature.User.DB as DB
 
--- Represets the response type for the authorization endpoint
-type AuthResponse = Headers '[ Header "Set-Cookie" SetCookie
-                             , Header "Set-Cookie" SetCookie
-                             ] NoContent
-
 -- The contract of the Authentication API. This API is public
 type AuthAPI
   = "login"
     :> ReqBody '[JSON] Login
-    :> Post '[JSON] AuthResponse
+    :> Post '[JSON] Token
 
-authServer :: CookieSettings -> JWTSettings -> ServerT AuthAPI (RIO Config)
+authServer :: JWTSettings -> ServerT AuthAPI (RIO Config)
 authServer = loginHandler
 
 -- | Checks input credentials and generates JWT token if they are valid.
 -- | Otherwise, returns 401
-loginHandler :: CookieSettings -> JWTSettings -> Login -> RIO Config AuthResponse
-loginHandler baseCS jwts input = do
-  mayCookies <- authenticateUser baseCS jwts input
-  case mayCookies of
-    Nothing      -> throwIO http401
-    Just cookies -> pure $ cookies NoContent
+loginHandler :: JWTSettings -> Login -> RIO Config Token
+loginHandler jwts input = do
+  token <- authenticateUser jwts input
+  case token of
+    Nothing -> throwIO http401
+    Just t  -> pure t
 
 -- | Validates input credentials against database.
--- | Returns SetCookie function with JWT token if credentials are valid.
--- | Returns nothing, otherwise.
-authenticateUser 
-  :: ( AddHeader "Set-Cookie" SetCookie response withOneCookie
-     , AddHeader "Set-Cookie" SetCookie withOneCookie withTwoCookies
-     )
-  => CookieSettings
-  -> JWTSettings
-  -> Login
-  -> RIO Config (Maybe (response -> withTwoCookies))
-authenticateUser baseCS jwts Login {..} = runMaybeT do
+-- | Returns Token if credentials are valid.
+-- | Otherwise, returns Nothing.
+authenticateUser :: JWTSettings -> Login -> RIO Config (Maybe Token)
+authenticateUser jwts Login {..} = runMaybeT do
   user    <- MaybeT $ DB.getUserByEmail email
   curUser <- MaybeT $ challengePassword password user
-  cs      <- MaybeT $ Just <$> updateCS baseCS
-  cookies <- MaybeT $ liftIO (acceptLogin cs jwts curUser)
-  pure cookies
+  token   <- MaybeT $ mkToken jwts curUser
+  pure token
 
   
 -- | Validates plain password against user's password.
@@ -65,11 +53,14 @@ challengePassword inputPassword userEntity = pure
   where
     Entity _ User { userPassword } = userEntity
 
--- | Updates cookie settings' expiration time.
--- | This is also used in JWT tokens internally.
-updateCS :: CookieSettings -> RIO env CookieSettings
-updateCS cs = do
-  now <- getCurrentTime
-  let exp = Just $ addUTCTime (43800 * 60) now
-  pure cs { cookieExpires = exp }
-
+-- | Token expiration date
+expDate :: RIO env UTCTime
+expDate = addUTCTime (43800 * 60) <$> getCurrentTime
+ 
+-- | Make JWT Token 
+mkToken :: JWTSettings -> CurrentUser -> RIO env (Maybe Token)
+mkToken jwts curUser = do
+  exp <- expDate
+  jwt <- liftIO $ makeJWT curUser jwts (Just exp)
+  let token = either (const Nothing) Just jwt
+  pure $ Token <$> token

@@ -40,6 +40,7 @@ dependencies:
 - http-types
 - wai
 - wai-extra
+- wai-cors
 - warp
 
 library:

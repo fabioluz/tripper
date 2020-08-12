@@ -23,3 +23,11 @@ mkCurrentUser (Entity userId user) = CurrentUser
   { curClientId = userClientId user
   , curUserId   = userId
   }
+
+
+-- | Represents the token response
+newtype Token = Token LByteString
+
+instance ToJSON Token where
+  toJSON (Token token) = object
+    ["token" .= decodeUtf8Lenient (toStrictBytes token)]

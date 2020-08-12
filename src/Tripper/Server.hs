@@ -12,7 +12,7 @@ import Tripper.Config
 
 type JWTAuth = Auth '[JWT] CurrentUser
 
-type AppContext = '[CookieSettings, JWTSettings]
+type AppContext = '[CookieSettings, JWTSettings] -- Why we have to pass cookie settings?
 
 type AppAPI
     =  AuthAPI
@@ -28,16 +28,16 @@ proxyAPI = Proxy
 convertApp :: Config -> RIO Config a -> Handler a
 convertApp cfg = Handler . ExceptT . try . runRIO cfg
 
-configServer :: CookieSettings -> JWTSettings -> ServerT AppAPI (RIO Config)
-configServer cs jwts
-    =  authServer cs jwts
+configServer :: JWTSettings -> ServerT AppAPI (RIO Config)
+configServer jwts
+    =  authServer jwts
   :<|> clientServer
   :<|> userServer
 
-server :: CookieSettings -> JWTSettings -> Config -> Server AppAPI
-server cs jwts cfg = hoistServerWithContext proxyAPI proxyContext
-  (convertApp cfg) (configServer cs jwts)
+server :: JWTSettings -> Config -> Server AppAPI
+server jwts cfg = hoistServerWithContext proxyAPI proxyContext
+  (convertApp cfg) (configServer jwts)
 
-app :: Context AppContext -> CookieSettings -> JWTSettings -> Config -> Application
-app ctx cs jwts = serveWithContext proxyAPI ctx . server cs jwts
+app :: Context AppContext -> JWTSettings -> Config -> Application
+app ctx jwts = serveWithContext proxyAPI ctx . server jwts
   

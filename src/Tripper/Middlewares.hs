@@ -2,6 +2,7 @@ module Tripper.Middlewares (addMiddlewares) where
 
 import Network.HTTP.Types
 import Network.Wai
+import Network.Wai.Middleware.Cors
 import RIO
 import Tripper.Config
 
@@ -38,12 +39,25 @@ loggingMiddleware logFunc app req sendRes = do
     runRIO logFunc (logEndRequest res)
     sendRes res
 
+-- |
+-- | Cors
+-- |
+
+corsMiddleware :: Middleware
+corsMiddleware = cors (const $ Just policy)
+  where
+    policy = simpleCorsResourcePolicy
+      { corsMethods        = ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
+      , corsRequestHeaders = ["Content-Type"]
+      }
+
 middlewares :: Config -> [Middleware]
 middlewares Config {..} = case configEnv of
-  Development -> [loggingMiddleware logFunc]
-  Production  -> []
+  Development -> defaultMdlws <> [loggingMiddleware logFunc]
+  Production  -> defaultMdlws
   where
     logFunc = fst configLogFunc
+    defaultMdlws = [corsMiddleware]
 
 addMiddlewares :: Config -> Application -> Application
 addMiddlewares env app = foldr ($) app (middlewares env)

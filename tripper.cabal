@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: eda2f1b4eda833ce58c726a9a1ccacebdc48af702328b3d34de8647c185d14a4
+-- hash: 0d8c89421f6e38fa1cc9e5a11cff247221a052d50d6e6236c43d2468f8ff50e8
 
 name:           tripper
 version:        0.1.0.0
@@ -71,6 +71,7 @@ library
     , transformers
     , uuid
     , wai
+    , wai-cors
     , wai-extra
     , warp
   default-language: Haskell2010
@@ -103,6 +104,7 @@ executable tripper-exe
     , tripper
     , uuid
     , wai
+    , wai-cors
     , wai-extra
     , warp
   default-language: Haskell2010
@@ -136,6 +138,7 @@ test-suite tripper-test
     , tripper
     , uuid
     , wai
+    , wai-cors
     , wai-extra
     , warp
   default-language: Haskell2010

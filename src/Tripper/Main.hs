@@ -15,16 +15,16 @@ main = bracket acquireConfig shutdownApp startApp
 startApp :: Config -> IO ()
 startApp env = do
   key <- generateKey
-  let jwt     = defaultJWTSettings key
-      cookie  = defaultCookieSettings
-      context = cookie :. jwt :. EmptyContext
+  let cs      = defaultCookieSettings
+      jwts    = defaultJWTSettings key
+      context = cs :. jwts :. EmptyContext
       pool    = configPool env
       port    = configPort env
       logger  = fst $ configLogFunc env
   runMigrations pool
   run port
     $ addMiddlewares env
-    $ app context cookie jwt env
+    $ app context jwts env
 
 shutdownApp :: Config -> IO ()
 shutdownApp Config {..} = do
