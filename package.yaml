@@ -73,7 +73,6 @@ library:
   ghc-options:
   - -Wall
   - -Wcompat
-  - -Werror
   - -Widentities
   - -Wincomplete-record-updates
   - -Wincomplete-uni-patterns
@@ -91,6 +90,30 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - tripper
+    default-extensions:
+    - BlockArguments
+    - DataKinds
+    - DeriveAnyClass
+    - DeriveGeneric
+    - DerivingStrategies
+    - DuplicateRecordFields
+    - FlexibleContexts
+    - FlexibleInstances
+    - FunctionalDependencies
+    - GADTs
+    - GeneralizedNewtypeDeriving
+    - LambdaCase
+    - MultiParamTypeClasses 
+    - NamedFieldPuns
+    - NoImplicitPrelude
+    - OverloadedStrings
+    - QuasiQuotes
+    - RecordWildCards
+    - StandaloneDeriving
+    - TemplateHaskell
+    - TypeFamilies
+    - TypeOperators
+    - UndecidableInstances
 
 tests:
   tripper-test:

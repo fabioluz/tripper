@@ -58,7 +58,7 @@ getByIdHandler CurrentUser {..} userId = do
 
 postHandler :: CurrentUser -> CreateUser -> AppM Config NoContent
 postHandler CurrentUser {..} input = do
-  userRes <- toRIO $ createUser input
+  userRes <- pure $ createUser input
   case userRes of
     Left err   -> throwIO $ http422 err
     Right user -> do
@@ -67,7 +67,7 @@ postHandler CurrentUser {..} input = do
 
 putHandler :: CurrentUser -> UserId -> UpdateUser -> AppM Config NoContent
 putHandler CurrentUser {..} userId input = do
-  userRes <- toRIO $ updateUser input
+  userRes <- pure $ updateUser input
   case userRes of
     Left err   -> throwIO $ http422 err
     Right user -> do

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4e2b8981825af645c4d00f30c2db07b07bdb4000180f0625bc534e068e713331
+-- hash: fe6bbc5fe38251b144eb645a3f26bde0f9d7ca87e88155fe2437a6ab1494ab59
 
 name:           tripper
 version:        0.1.0.0
@@ -36,7 +36,6 @@ library
       Tripper.Feature.Shared
       Tripper.Feature.Shared.Error
       Tripper.Feature.Shared.Types
-      Tripper.Feature.Shared.Utils
       Tripper.Feature.Shared.Validators.Error
       Tripper.Feature.Shared.Validators.Text
       Tripper.Feature.User.DB
@@ -51,7 +50,7 @@ library
   hs-source-dirs:
       src
   default-extensions: BlockArguments DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicateRecordFields FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses NamedFieldPuns NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
-  ghc-options: -Wall -Wcompat -Werror -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -Wunused-imports
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -Wunused-imports
   build-depends:
       aeson
     , base >=4.7 && <5
@@ -84,6 +83,7 @@ executable tripper-exe
       Paths_tripper
   hs-source-dirs:
       app
+  default-extensions: BlockArguments DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicateRecordFields FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses NamedFieldPuns NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson

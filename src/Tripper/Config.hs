@@ -7,6 +7,35 @@ import RIO.Orphans ()
 import Servant.Auth.Server hiding (def)
 import System.Environment
 
+-- |
+-- | App Monad
+-- |
+
+newtype AppM env a = AppM { unAppM :: RIO env a }
+  deriving newtype
+    ( Functor
+    , Applicative
+    , Monad
+    , MonadIO
+    , MonadReader env
+    , MonadThrow
+    , MonadUnliftIO
+    , Semigroup
+    )
+
+instance ThrowAll (AppM env a) where
+  throwAll = throwIO
+
+liftAppM :: (MonadIO m, MonadReader env m) => AppM env a -> m a 
+liftAppM = liftRIO . unAppM
+
+runAppM :: MonadIO m => env -> AppM env a -> m a 
+runAppM env = runRIO env . unAppM
+
+-- |
+-- | Application Environment
+-- | 
+
 data Config = Config
   { configPort    :: Int
   , configEnv     :: Environment
@@ -56,27 +85,6 @@ destroyPool = destroyAllResources
 -- |
 -- | Utilities
 -- |
-
-
-newtype AppM env a = AppM { unAppM :: RIO env a }
-  deriving newtype ( Functor
-                   , Applicative
-                   , Monad
-                   , MonadIO
-                   , MonadReader env
-                   , MonadThrow
-                   , MonadUnliftIO
-                   , Semigroup
-                   )
-
-liftAppM :: (MonadIO m, MonadReader env m) => AppM env a -> m a 
-liftAppM = liftRIO . unAppM
-
-runAppM :: MonadIO m => env -> AppM env a -> m a 
-runAppM env = runRIO env . unAppM
-
-instance ThrowAll (AppM env a) where
-  throwAll = throwIO
 
 lookupSetting :: Read a => String -> a -> IO a
 lookupSetting env def = do

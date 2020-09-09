@@ -49,8 +49,3 @@ updateUser clientId userId ValidUpdateUser {..} = do
     , UserNickName =. validUserNickName
     , UserUpdatedAt =. now
     ]
-
-t :: AppM env UTCTime
-t = do
-  now <- getCurrentTime
-  pure now
