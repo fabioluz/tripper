@@ -17,14 +17,14 @@ import qualified Tripper.Feature.User.DB as DB
 type AuthAPI
   = "login"
     :> ReqBody '[JSON] Login
-    :> Post '[JSON] Token
+    :> Post '[JSON] LoginOutput
 
-authServer :: JWTSettings -> ServerT AuthAPI (RIO Config)
+authServer :: JWTSettings -> ServerT AuthAPI (AppM Config)
 authServer = loginHandler
 
 -- | Checks input credentials and generates JWT token if they are valid.
 -- | Otherwise, returns 401
-loginHandler :: JWTSettings -> Login -> RIO Config Token
+loginHandler :: JWTSettings -> Login -> AppM Config LoginOutput
 loginHandler jwts input = do
   token <- authenticateUser jwts input
   case token of
@@ -34,18 +34,18 @@ loginHandler jwts input = do
 -- | Validates input credentials against database.
 -- | Returns Token if credentials are valid.
 -- | Otherwise, returns Nothing.
-authenticateUser :: JWTSettings -> Login -> RIO Config (Maybe Token)
+authenticateUser :: JWTSettings -> Login -> AppM Config (Maybe LoginOutput)
 authenticateUser jwts Login {..} = runMaybeT do
   user    <- MaybeT $ DB.getUserByEmail email
   curUser <- MaybeT $ challengePassword password user
   token   <- MaybeT $ mkToken jwts curUser
-  pure token
+  pure $ LoginOutput token user
 
   
 -- | Validates plain password against user's password.
 -- | Returns the current user object if password matches.
 -- | Otherwise, returns nothing.
-challengePassword :: Text -> Entity User -> RIO env (Maybe CurrentUser)
+challengePassword :: Text -> Entity User -> AppM env (Maybe CurrentUser)
 challengePassword inputPassword userEntity = pure 
   if checkPassword inputPassword userPassword
     then Just (mkCurrentUser userEntity)
@@ -54,13 +54,13 @@ challengePassword inputPassword userEntity = pure
     Entity _ User { userPassword } = userEntity
 
 -- | Token expiration date
-expDate :: RIO env UTCTime
-expDate = addUTCTime (43800 * 60) <$> getCurrentTime
+tokenExpDate :: AppM env UTCTime
+tokenExpDate = addUTCTime (43800 * 60) <$> getCurrentTime
  
 -- | Make JWT Token 
-mkToken :: JWTSettings -> CurrentUser -> RIO env (Maybe Token)
+mkToken :: JWTSettings -> CurrentUser -> AppM env (Maybe LByteString)
 mkToken jwts curUser = do
-  exp <- expDate
-  jwt <- liftIO $ makeJWT curUser jwts (Just exp)
-  let token = either (const Nothing) Just jwt
-  pure $ Token <$> token
+  expDate <- tokenExpDate
+  token   <- liftIO $ makeJWT curUser jwts (Just expDate)
+  pure $ either (const Nothing) Just token
+  

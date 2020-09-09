@@ -3,6 +3,7 @@ module Tripper.Feature.Shared.Error where
 import Data.Aeson
 import RIO
 import Servant
+import Tripper.Config
 import Tripper.Feature.Shared.Validators.Error
 
 lbshow :: Show a => a -> LByteString
@@ -11,7 +12,7 @@ lbshow = fromStrictBytes . encodeUtf8 . tshow
 toEither :: Maybe a -> Either () a
 toEither = maybe (Left ()) Right
 
-orThrow :: Either e a -> (e -> ServerError) -> RIO env a
+orThrow :: Either e a -> (e -> ServerError) -> AppM env a
 orThrow e f = either (throwIO . f) pure e
 
 http401 :: ServerError

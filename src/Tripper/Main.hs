@@ -20,7 +20,6 @@ startApp env = do
       context = cs :. jwts :. EmptyContext
       pool    = configPool env
       port    = configPort env
-      logger  = fst $ configLogFunc env
   runMigrations pool
   run port
     $ addMiddlewares env

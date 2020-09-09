@@ -48,7 +48,7 @@ corsMiddleware = cors (const $ Just policy)
   where
     policy = simpleCorsResourcePolicy
       { corsMethods        = ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
-      , corsRequestHeaders = ["Content-Type"]
+      , corsRequestHeaders = ["Content-Type", "Authorization"]
       }
 
 middlewares :: Config -> [Middleware]

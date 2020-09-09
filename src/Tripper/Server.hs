@@ -4,11 +4,11 @@ import Control.Monad.Except
 import RIO hiding (Handler)
 import Servant
 import Servant.Auth.Server
+import Tripper.Config
 import Tripper.Feature.Auth.Types
 import Tripper.Feature.Auth.Server
 import Tripper.Feature.Client.Server 
 import Tripper.Feature.User.Server
-import Tripper.Config
 
 type JWTAuth = Auth '[JWT] CurrentUser
 
@@ -25,10 +25,10 @@ proxyContext = Proxy
 proxyAPI :: Proxy AppAPI
 proxyAPI = Proxy
 
-convertApp :: Config -> RIO Config a -> Handler a
-convertApp cfg = Handler . ExceptT . try . runRIO cfg
+convertApp :: Config -> AppM Config a -> Handler a
+convertApp cfg = Handler . ExceptT . try . runAppM cfg
 
-configServer :: JWTSettings -> ServerT AppAPI (RIO Config)
+configServer :: JWTSettings -> ServerT AppAPI (AppM Config)
 configServer jwts
     =  authServer jwts
   :<|> clientServer

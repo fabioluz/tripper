@@ -13,10 +13,10 @@ type ClientAPI
     :> ReqBody '[JSON] CreateClient
     :> PostCreated '[JSON] NoContent
 
-clientServer :: ServerT ClientAPI (RIO Config)
+clientServer :: ServerT ClientAPI (AppM Config)
 clientServer = createHandler
 
-createHandler :: CreateClient -> RIO Config NoContent
+createHandler :: CreateClient -> AppM Config NoContent
 createHandler clientInput = do
   let adminInput = fromCreateClient clientInput
   client <- createClient clientInput `orThrow` http422

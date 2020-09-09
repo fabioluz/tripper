@@ -38,6 +38,7 @@ dependencies:
 - servant-auth
 - servant-auth-server
 - http-types
+- http-api-data
 - wai
 - wai-extra
 - wai-cors
@@ -69,6 +70,16 @@ library:
   - TypeFamilies
   - TypeOperators
   - UndecidableInstances
+  ghc-options:
+  - -Wall
+  - -Wcompat
+  - -Werror
+  - -Widentities
+  - -Wincomplete-record-updates
+  - -Wincomplete-uni-patterns
+  - -Wpartial-fields
+  - -Wredundant-constraints
+  - -Wunused-imports
 
 executables:
   tripper-exe:
@@ -78,7 +89,6 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
-    - -fwarn-unused-imports
     dependencies:
     - tripper
 

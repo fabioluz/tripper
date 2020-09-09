@@ -10,22 +10,21 @@ import Tripper.Feature.User.DB
 import Tripper.Feature.User.Types
 import Tripper.Models
 
-insertClientAndAdmin :: HasPool env => ValidCreateClient -> ValidCreateUser -> RIO env ()
+insertClientAndAdmin :: HasPool env => ValidCreateClient -> ValidCreateUser -> AppM env ()
 insertClientAndAdmin validClient validUser = runDb $ do
-  client   <- liftRIO $ mkClient validClient
+  client   <- liftAppM $ mkClient validClient
   clientId <- insert client
 
-  user       <- liftRIO $ mkUser clientId validUser
+  user       <- liftAppM $ mkUser clientId validUser
   emailInUse <- isJust <$> checkUnique user
   when emailInUse $
     throwIO $ http422 emailInUseError
 
-  userId <- insert user
-  pure ()
+  void $ insert user
 
-mkClient :: ValidCreateClient -> RIO env Client
+mkClient :: ValidCreateClient -> AppM env Client
 mkClient ValidCreateClient {..} = do
-  now <- getCurrentTime
+  now <- liftIO getCurrentTime
   pure Client
     { clientName      = validClientName
     , clientCreatedAt = now

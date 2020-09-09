@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0d8c89421f6e38fa1cc9e5a11cff247221a052d50d6e6236c43d2468f8ff50e8
+-- hash: 4e2b8981825af645c4d00f30c2db07b07bdb4000180f0625bc534e068e713331
 
 name:           tripper
 version:        0.1.0.0
@@ -51,10 +51,12 @@ library
   hs-source-dirs:
       src
   default-extensions: BlockArguments DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicateRecordFields FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses NamedFieldPuns NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
+  ghc-options: -Wall -Wcompat -Werror -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -Wunused-imports
   build-depends:
       aeson
     , base >=4.7 && <5
     , cryptonite
+    , http-api-data
     , http-types
     , mtl
     , path-pieces
@@ -82,11 +84,12 @@ executable tripper-exe
       Paths_tripper
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -fwarn-unused-imports
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , base >=4.7 && <5
     , cryptonite
+    , http-api-data
     , http-types
     , mtl
     , path-pieces
@@ -121,6 +124,7 @@ test-suite tripper-test
       aeson
     , base >=4.7 && <5
     , cryptonite
+    , http-api-data
     , http-types
     , mtl
     , path-pieces

@@ -4,7 +4,7 @@ import Data.Pool
 import Database.Persist.Postgresql hiding (LogFunc)
 import RIO
 import RIO.Orphans ()
-import Servant.Auth.Server
+import Servant.Auth.Server hiding (def)
 import System.Environment
 
 data Config = Config
@@ -57,7 +57,25 @@ destroyPool = destroyAllResources
 -- | Utilities
 -- |
 
-instance ThrowAll (RIO env a) where
+
+newtype AppM env a = AppM { unAppM :: RIO env a }
+  deriving newtype ( Functor
+                   , Applicative
+                   , Monad
+                   , MonadIO
+                   , MonadReader env
+                   , MonadThrow
+                   , MonadUnliftIO
+                   , Semigroup
+                   )
+
+liftAppM :: (MonadIO m, MonadReader env m) => AppM env a -> m a 
+liftAppM = liftRIO . unAppM
+
+runAppM :: MonadIO m => env -> AppM env a -> m a 
+runAppM env = runRIO env . unAppM
+
+instance ThrowAll (AppM env a) where
   throwAll = throwIO
 
 lookupSetting :: Read a => String -> a -> IO a

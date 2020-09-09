@@ -1,6 +1,5 @@
 module Tripper.Models where
 
-import Data.UUID
 import Database.Persist.Sql
 import Database.Persist.TH
 import RIO
@@ -10,14 +9,14 @@ import Tripper.Feature.Shared
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
   Client json sql=clients
-    Id        UUID     default=uuid_generate_v4()
+    Id        GUID     default=uuid_generate_v4()
     name      Text
     createdAt UTCTime
     updatedAt UTCTime
     deriving Show Eq
 
   User sql=users
-    Id        UUID      default=uuid_generate_v4()
+    Id        GUID      default=uuid_generate_v4()
     clientId  ClientId
     email     Email
     password  Password
@@ -32,7 +31,7 @@ share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 runMigrations :: ConnectionPool -> IO ()
 runMigrations = runSqlPool $ runMigration migrateAll
 
-runDb :: HasPool env => SqlPersistT IO a -> RIO env a
+runDb :: HasPool env => SqlPersistT IO a -> AppM env a
 runDb query = do
   pool <- view poolL
   liftIO $ runSqlPool query pool

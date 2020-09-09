@@ -1,6 +1,7 @@
 module Tripper.Feature.Shared.Utils where
 
 import RIO
+import Tripper.Config
 
-toRIO :: a -> RIO env a
+toRIO :: a -> AppM env a
 toRIO = liftIO . pure

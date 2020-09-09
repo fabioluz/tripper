@@ -27,7 +27,7 @@ type UserAPI
       :> ReqBody '[JSON] UpdateUser
       :> Put '[JSON] NoContent
 
-userServer ::AuthResult CurrentUser -> ServerT UserAPI (RIO Config)
+userServer :: AuthResult CurrentUser -> ServerT UserAPI (AppM Config)
 userServer (Authenticated curUser)
     =  getMeHandler curUser 
   :<|> getHandler curUser
@@ -37,39 +37,39 @@ userServer (Authenticated curUser)
 
 userServer _ = throwAll err401
 
-getHandler :: CurrentUser -> RIO Config [UserOutput]
+getHandler :: CurrentUser -> AppM Config [UserOutput]
 getHandler CurrentUser {..} = do
   users <- DB.getUsers curClientId
   pure $ UserOutput <$> users
 
-getMeHandler :: CurrentUser -> RIO Config UserOutput
+getMeHandler :: CurrentUser -> AppM Config UserOutput
 getMeHandler CurrentUser {..} = do
   mayUser <- DB.getUserById curClientId curUserId
   case mayUser of
     Nothing   -> throwIO http404
     Just user -> pure $ UserOutput user
 
-getByIdHandler :: CurrentUser -> UserId -> RIO Config UserOutput
+getByIdHandler :: CurrentUser -> UserId -> AppM Config UserOutput
 getByIdHandler CurrentUser {..} userId = do
   mayUser <- DB.getUserById curClientId userId
   case mayUser of
     Nothing   -> throwIO http404
     Just user -> pure $ UserOutput user
 
-postHandler :: CurrentUser -> CreateUser -> RIO Config NoContent
+postHandler :: CurrentUser -> CreateUser -> AppM Config NoContent
 postHandler CurrentUser {..} input = do
   userRes <- toRIO $ createUser input
   case userRes of
-    Left error -> throwIO $ http422 error
+    Left err   -> throwIO $ http422 err
     Right user -> do
-      DB.insertUser curClientId user
+      _ <- DB.insertUser curClientId user
       pure NoContent
 
-putHandler :: CurrentUser -> UserId -> UpdateUser -> RIO Config NoContent
+putHandler :: CurrentUser -> UserId -> UpdateUser -> AppM Config NoContent
 putHandler CurrentUser {..} userId input = do
   userRes <- toRIO $ updateUser input
   case userRes of
-    Left error -> throwIO $ http422 error
+    Left err   -> throwIO $ http422 err
     Right user -> do
       DB.updateUser curClientId userId user
       pure NoContent
