@@ -8,6 +8,7 @@ import Tripper.Config
 import Tripper.Feature.Auth.Types
 import Tripper.Feature.Auth.Server
 import Tripper.Feature.Client.Server 
+import Tripper.Feature.Translation.Server
 import Tripper.Feature.User.Server
 
 type JWTAuth = Auth '[JWT] CurrentUser
@@ -16,6 +17,7 @@ type AppContext = '[CookieSettings, JWTSettings] -- Why we have to pass cookie s
 
 type AppAPI
     =  AuthAPI
+  :<|> TranslationAPI
   :<|> ClientAPI
   :<|> JWTAuth :> UserAPI
 
@@ -31,6 +33,7 @@ convertApp cfg = Handler . ExceptT . try . runAppM cfg
 configServer :: JWTSettings -> ServerT AppAPI (AppM Config)
 configServer jwts
     =  authServer jwts
+  :<|> translationServer
   :<|> clientServer
   :<|> userServer
 

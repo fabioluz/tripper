@@ -58,8 +58,7 @@ getByIdHandler CurrentUser {..} userId = do
 
 postHandler :: CurrentUser -> CreateUser -> AppM Config NoContent
 postHandler CurrentUser {..} input = do
-  userRes <- pure $ createUser input
-  case userRes of
+  case createUser input of
     Left err   -> throwIO $ http422 err
     Right user -> do
       _ <- DB.insertUser curClientId user
@@ -67,8 +66,7 @@ postHandler CurrentUser {..} input = do
 
 putHandler :: CurrentUser -> UserId -> UpdateUser -> AppM Config NoContent
 putHandler CurrentUser {..} userId input = do
-  userRes <- pure $ updateUser input
-  case userRes of
+  case updateUser input of
     Left err   -> throwIO $ http422 err
     Right user -> do
       DB.updateUser curClientId userId user

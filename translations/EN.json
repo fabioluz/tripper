@@ -1,0 +1,33 @@
+{
+  "values": {
+    "menu_register": "Register",
+    "menu_login": "Login",
+    "menu_home": "Home",
+    "menu_users": "Users",
+    "menu_logout": "Logout",
+
+    "login_email": "Email",
+    "login_password": "Password",
+    "login_button": "Login",
+    "login_error_network": "Something went wrong. Try again later.",
+    "login_error_validation": "Credentials are not valid.",
+    "login_error_emailRequired": "The email is required.",
+    "login_error_passwordRequired": "The password is required.",
+    
+    "register_clientName": "Client name",
+    "register_adminEmail": "Admin email",
+    "register_adminPassword": "Admin password",
+    "register_adminConfirmPassword": "Admin confirm password",
+    "register_adminName": "Admin name",
+    "register_adminNickname": "Admin nickname",
+    "register_register": "Register",
+    "register_title": "Register your account",
+    "register_error_clientNameRequired": "Client name is required.",
+    "register_error_adminEmailRequired": "Admin email is required.",
+    "register_error_adminPasswordRequired": "Admin password is required.",
+    "register_error_adminConfirmPasswordRequired": "Admin confirm password is required.",
+    "register_error_adminConfirmPasswordMustMatch": "Admin password and confirm password must match.",
+    "register_error_adminNameRequired": "Admin name is required.",
+    "register_error_network": "Something went wrong. Try again later."
+  }
+}

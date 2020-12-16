@@ -44,8 +44,9 @@ loggingMiddleware logFunc app req sendRes = do
 -- |
 
 corsMiddleware :: Middleware
-corsMiddleware = cors (const $ Just policy)
+corsMiddleware = cors $ const $ Just policy
   where
+    policy :: CorsResourcePolicy 
     policy = simpleCorsResourcePolicy
       { corsMethods        = ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
       , corsRequestHeaders = ["Content-Type", "Authorization"]
@@ -56,7 +57,10 @@ middlewares Config {..} = case configEnv of
   Development -> defaultMdlws <> [loggingMiddleware logFunc]
   Production  -> defaultMdlws
   where
+    logFunc :: LogFunc
     logFunc = fst configLogFunc
+
+    defaultMdlws :: [Middleware]
     defaultMdlws = [corsMiddleware]
 
 addMiddlewares :: Config -> Application -> Application
