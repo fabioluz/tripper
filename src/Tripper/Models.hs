@@ -1,3 +1,5 @@
+ {-# OPTIONS_GHC -Wno-missing-deriving-strategies #-}
+
 module Tripper.Models where
 
 import Database.Persist.Sql

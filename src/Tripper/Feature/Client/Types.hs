@@ -10,7 +10,8 @@ data CreateClient = CreateClient
   , adminPassword :: Text
   , adminName     :: Text
   }
-  deriving (Show, Generic, FromJSON, ToJSON)
+  deriving stock (Show, Generic)
+  deriving anyclass (FromJSON, ToJSON)
 
 data ValidCreateClient = ValidCreateClient
   { validClientName :: Text

@@ -17,7 +17,7 @@ import Web.PathPieces
 -- |
 
 newtype Email = Email { unEmail :: Text }
-  deriving (Show, Eq, Generic)
+  deriving stock (Show, Eq)
   deriving newtype (FromJSON, ToJSON)
 
 newtype EmailError = EmailError { unEmailError :: TextError }
@@ -44,7 +44,7 @@ instance PathPiece Email where
 -- |
 
 newtype Password = Password { unPassword :: Text }
-  deriving (Show, Eq, Generic)
+  deriving stock (Show, Eq)
   deriving newtype (FromJSON)
 
 mkPassword :: Text -> AppM env Password

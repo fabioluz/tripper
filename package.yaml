@@ -79,6 +79,8 @@ library:
   - -Wpartial-fields
   - -Wredundant-constraints
   - -Wunused-imports
+  - -Wmissing-deriving-strategies
+  - -Werror
 
 executables:
   tripper-exe:

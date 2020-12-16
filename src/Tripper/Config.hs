@@ -1,6 +1,20 @@
-module Tripper.Config where
+module Tripper.Config
+( AppM (..)
+, Config (..)
+, Environment (..)
+, HasPool (..)
+, HasLogFunc (..)
+, ConnectionPool
+, liftAppM
+, runAppM
+, createLogFunc
+, destroyLogFunc
+, createPool
+, destroyPool
+, lookupSetting
+) where
 
-import Data.Pool
+import Data.Pool hiding (createPool)
 import Database.Persist.Postgresql hiding (LogFunc)
 import RIO
 import RIO.Orphans ()
@@ -44,7 +58,7 @@ data Config = Config
   }
 
 data Environment = Development | Production
-  deriving (Eq, Read)
+  deriving stock (Eq, Read)
 
 -- |
 -- | Logging

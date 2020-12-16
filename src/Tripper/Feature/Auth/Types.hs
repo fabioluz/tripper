@@ -11,7 +11,9 @@ import Tripper.Models
 data Login = Login
   { email    :: Text
   , password :: Text
-  } deriving (Generic, FromJSON)
+  }
+  deriving stock Generic
+  deriving anyclass FromJSON
 
 -- | Represents the output for login
 data LoginOutput = LoginOutput
@@ -23,7 +25,9 @@ data LoginOutput = LoginOutput
 data CurrentUser = CurrentUser
   { curClientId :: ClientId
   , curUserId   :: UserId
-  } deriving (Generic, FromJSON, ToJSON, FromJWT, ToJWT)
+  }
+  deriving stock (Generic)
+  deriving anyclass (FromJSON, ToJSON, FromJWT, ToJWT)
 
 mkCurrentUser :: Entity User -> CurrentUser
 mkCurrentUser (Entity userId user) = CurrentUser

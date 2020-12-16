@@ -16,7 +16,7 @@ instance IsErrorMsg Text where
   errorMsg = id
 
 newtype ValidationErrors = ValidationErrors { unValError :: HashMap Text Text }
-  deriving Generic
+  deriving stock Generic
   deriving newtype ToJSON
 
 mkValError :: Text -> Text -> ValidationErrors

@@ -25,7 +25,8 @@ data CreateUser = CreateUser
   , name     :: Text
   , nickName :: Maybe Text
   }
-  deriving (Show, Generic, FromJSON)
+  deriving stock (Show, Generic)
+  deriving anyclass (FromJSON)
 
 data ValidCreateUser = ValidCreateUser
   { validUserEmail    :: Email
@@ -45,7 +46,8 @@ data UpdateUser = UpdateUser
   { name     :: Text 
   , nickName :: Maybe Text
   }
-  deriving (Show, Generic, FromJSON)
+  deriving stock (Show, Generic)
+  deriving anyclass (FromJSON)
 
 data ValidUpdateUser = ValidUpdateUser
   { validUserName     :: Text

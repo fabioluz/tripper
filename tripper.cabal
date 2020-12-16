@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: fe6bbc5fe38251b144eb645a3f26bde0f9d7ca87e88155fe2437a6ab1494ab59
+-- hash: 3e3e06eac868727ab0d2aab1fd6c1aeca8450eb87322b48543962d8e29e62dae
 
 name:           tripper
 version:        0.1.0.0
@@ -38,6 +38,7 @@ library
       Tripper.Feature.Shared.Types
       Tripper.Feature.Shared.Validators.Error
       Tripper.Feature.Shared.Validators.Text
+      Tripper.Feature.Translation.Server
       Tripper.Feature.User.DB
       Tripper.Feature.User.Server
       Tripper.Feature.User.Types
@@ -50,7 +51,7 @@ library
   hs-source-dirs:
       src
   default-extensions: BlockArguments DataKinds DeriveAnyClass DeriveGeneric DerivingStrategies DuplicateRecordFields FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving LambdaCase MultiParamTypeClasses NamedFieldPuns NoImplicitPrelude OverloadedStrings QuasiQuotes RecordWildCards StandaloneDeriving TemplateHaskell TypeFamilies TypeOperators UndecidableInstances
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -Wunused-imports
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wpartial-fields -Wredundant-constraints -Wunused-imports -Wmissing-deriving-strategies -Werror
   build-depends:
       aeson
     , base >=4.7 && <5

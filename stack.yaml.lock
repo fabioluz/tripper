@@ -27,7 +27,7 @@ packages:
     hackage: jose-0.8.3@sha256:8aced915d565f8397150149d46f1f2f2f7ec7aaddf9593f52b420111629332cf,3333
 snapshots:
 - completed:
-    size: 484709
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2020/2/13.yaml
-    sha256: 203c243328602beab34ab85e964e09b41dcbaec55ad75ff6627ed3b9450d2f82
-  original: nightly-2020-02-13
+    size: 533252
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/16/26.yaml
+    sha256: cdbc5db9c1afe80a5998247939027a0c7db92fa0f20b5cd01596ec3da628b622
+  original: lts-16.26
