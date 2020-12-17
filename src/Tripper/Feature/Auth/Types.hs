@@ -17,7 +17,7 @@ data Login = Login
 
 -- | Represents the output for login
 data LoginOutput = LoginOutput
-  { token :: LByteString 
+  { token :: ByteString 
   , user  :: Entity User 
   }
 
@@ -37,6 +37,6 @@ mkCurrentUser (Entity userId user) = CurrentUser
 
 instance ToJSON LoginOutput where
   toJSON LoginOutput {..} = object
-    [ "token" .= decodeUtf8Lenient (toStrictBytes token)
+    [ "token" .= decodeUtf8Lenient token
     , "user"  .= toJSON (UserOutput user)
     ]

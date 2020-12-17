@@ -14,8 +14,8 @@ main = bracket acquireConfig shutdownApp startApp
 
 startApp :: Config -> IO ()
 startApp env = do
-  key <- generateKey
-
+  key <- readKey "tripper-jwtkey" `catchIO` const generateKey 
+ 
   let
     cs :: CookieSettings
     cs = defaultCookieSettings
@@ -41,7 +41,6 @@ shutdownApp :: Config -> IO ()
 shutdownApp Config {..} = do
   destroyPool configPool
   destroyLogFunc configLogFunc
-  pure ()
 
 acquireConfig :: IO Config
 acquireConfig = do

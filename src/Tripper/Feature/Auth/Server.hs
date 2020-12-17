@@ -58,9 +58,9 @@ tokenExpDate :: AppM env UTCTime
 tokenExpDate = addUTCTime (43800 * 60) <$> getCurrentTime
  
 -- | Make JWT Token 
-mkToken :: JWTSettings -> CurrentUser -> AppM env (Maybe LByteString)
+mkToken :: JWTSettings -> CurrentUser -> AppM env (Maybe ByteString)
 mkToken jwts curUser = do
   expDate <- tokenExpDate
   token   <- liftIO $ makeJWT curUser jwts (Just expDate)
-  pure $ either (const Nothing) Just token
+  pure $ either (const Nothing) (Just . toStrictBytes) token
   
